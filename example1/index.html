@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksempel 1 </title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="demo.js"></script>
+</head>
+
+<body>
+    <button onClick="noLayout()">Ingen Layout</button>
+    <button onClick="verticalLayout()">Vertikal Layout</button>
+    <button onClick="horizontalLayout()">Horisontal Layout</button>
+    <button onClick="gridLayout()">Grid Layout</button>
+
+    <h1>Eksempel 1</h1>
+
+    <h2>onClick Demo</h2>
+    Hva heter du? <input type="text" id="inputName" onChange="refreshName()"/>
+    <div id="yourName"></div>
+
+    <h2>Visuell Teller Demo</h2>
+    <div class="NumberDemo">
+        <div id="numDiv"></div>
+        <div>
+            <button onClick="Minus()">-</button>
+            <button onClick="Plus()">+</button>
+        </div>
+
+        <script>
+            var Num = 5;
+            var numDiv = document.getElementById('numDiv');
+            numDiv.innerHTML = Num;
+
+            function Minus() {
+                Num = Num - 1;
+                numDiv.innerHTML = Num;
+            }
+            function Plus() {
+                Num = Num + 1;
+                numDiv.innerHTML = Num;
+            }
+        </script>
+    </div>
+
+    <div id="container">
+        <div class="card">
+            <div class="header green" onClick="showText()">Verktøy</div>
+            <div id="divText"></div>
+        </div>
+
+        <div class="card">
+            <div class="header blue" onClick="showHTML()">HTML</div>
+            <div id="divHTML"></div>
+        </div>
+
+        <div class="card">
+            <div class="header red" onClick="showCSS()">CSS</div>
+            <div id="divCSS"></div>
+        </div>
+
+        <div class="card">
+            <div class="header yellow" onClick="showJS()">JavaScript</div>
+            <div id="divJS"></div>
+        </div>
+
+        <div class="card">
+            <div class="header gray" onClick="showGame()">Hode, kropp og ben</div>
+            <div id="divGame"></div>
+        </div>
+        
+    </div>
+</body>
+
+</html>
