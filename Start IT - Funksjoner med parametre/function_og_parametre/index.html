@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funksjon med parametre</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <div id="textDiv" class="textDiv">
+        <p id="textBox"></p>
+    </div>
+    <div class="inputs">
+        Ny Text
+        <input type="text" class="inputText" id="text_input"></input>
+        <button onClick="changeColorText('keep','input')">Bytt Tekst</button>
+        <br>
+        <div onClick="changeColorText('lightgray','keep')" class="colorBTN gray">Bytt Bakgrunn Farge til Grå</div>
+        <div onClick="changeColorText('red','keep')" class="colorBTN red">Bytt Bakgrunn Farge til Rød</div>
+        <div onClick="changeColorText('blue','keep')" class="colorBTN blue">Bytt Bakgrunn Farge til Blå</div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Om meg</title>
+    <link rel="stylesheet" href="styles_day.css" />
+    <script src="intro.js"></script>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="tabs">
+            <div class="header" id="aboutme" onClick="loadContent('aboutme')">Om meg</div>
+            <div class="header" id="hobby" onClick="loadContent('hobby')">Hobby</div>
+            <div class="header" id="experience" onClick="loadContent('experience')">Erfaring</div>
+            <div class="header" id="theme" onClick="switchTheme()">Theme: Day</div>
+        </div>
+        <div class="divider" id="divider1"></div>
+        <div class="profileImage">
+            <img src="img/pic.png" class="pic"/>
+        </div>
+        <div class="divider" id="divider2"></div>
+        <div class="content" id="content">
+            <div class="text" id="text">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

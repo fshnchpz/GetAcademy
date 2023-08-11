@@ -1,0 +1,39 @@
+.textDiv {
+    width: 400px;
+    height: 400px;
+    background-color: lightgray;
+    border: solid gray 1px;
+    margin: 20px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 20px;
+}
+
+.inputText {
+    height: 100px;
+}
+
+
+.colorBTN {
+    height: 30px;
+    width: 200px;
+    border: gray solid 2px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 5px;
+    color: #FFF;
+}
+
+.gray {
+    background-color: gray;
+}
+.red {
+    background-color: #fa0101;
+}
+.blue {
+    background-color: #075eff;
+}
