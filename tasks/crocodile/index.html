@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krokodille Spill</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="center"> <h1>Er det høyere, mindre eller lik?</h1> </div>
+            <div class="divider"></div>
+            <div class="center col" style="margin: 30px">
+                <div class="center row">
+                        <h1>Poeng:</h1>
+                </div>
+                <div id="score">0</div>
+                <div class="divider"></div>
+                <div class="center row">
+                        <div id="number1" class="numberField"> 1</div>
+                        <input id="answer" value="" type="text" maxlength="1">
+                        <div id="number2" class="numberField"> 7</div>
+                </div>
+                <div class="center row">
+                    <button onClick="submitAnswer()">Svar</button>
+                    <button onClick="resetAll()">Reset</button>
+                 </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
