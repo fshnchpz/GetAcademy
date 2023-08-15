@@ -92,35 +92,43 @@ button {
 button:hover {
     background-color: #ff976d;
 }
+.keyboard_btn {
+    margin: 3px;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    border-color: #ff6e35;
+    background-color: #ff6e35;
+    border-style: none;
+    height: 25px;
+    width: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+    padding-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+.keyboard_btn:hover {
+    background-color: #ff976d;
+}
 
-.light {
-    box-shadow: -2px 8px 25px 8px black inset;
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    margin: 6px;
+.keyboardBox {
+    display: flex;
+    flex-direction: row;
 }
-.light_active {
-    box-shadow: -2px 8px 25px 8px black inset;
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-}
-.red {
-    background-color:#290404;
-}
-.yellow {
-    background-color:#2e2207;
-}
-.green {
-    background-color:#083810;
-}
-.red_active {
-    background-color:#ff1313;
-}
-.yellow_active {
-    background-color:#ffb413;
-}
-.green_active {
-    background-color:#13ff3a;
+
+#textField {
+    all: revert;
+
+    background-color: lightgray;
+    border: darkgray solid 1px;
+    border-radius: 10px;
+    margin: 5px;
+    height: 400px;
+    text-align: left !important;
+    padding: 10px;
 }
