@@ -74,12 +74,37 @@ a:hover {
     background-color: #ff976d;
 }
 
+button {
+    margin: 5px;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    border-color: #ff6e35;
+    background-color: #ff6e35;
+    border-style: none;
+    height: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+    padding-top: 5px;
+}
+button:hover {
+    background-color: #ff976d;
+}
+
 .light {
     box-shadow: -2px 8px 25px 8px black inset;
     height: 100px;
     width: 100px;
     border-radius: 50%;
     margin: 6px;
+}
+.light_active {
+    box-shadow: -2px 8px 25px 8px black inset;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
 }
 .red {
     background-color:#290404;
