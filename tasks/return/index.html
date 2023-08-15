@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retur</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="center"> <h1>Generer Pris & Tekst</h1> </div>
+            <div class="divider"></div>
+            <div class="center col" style="margin: 30px">
+                <div id="textField"></div>
+            </div>
+            <div class="divider"></div>
+            <h2>Produkt</h2>
+            <input onChange="changeName(this.value)" value="Eple">
+            <h2>Pris</h2>
+            <input onChange="changePrice(this.value)" value="350" type="number">
+            <h2>Globalt Rabatt</h2>
+            <input onChange="changeDiscount(this.value)" value="0" type="number" min="0" max="100">
+            <br>
+            <br>
+            <button onClick="GeneratePrice()">Generer Pris</button>
+        </div>
+    </div>
+</body>
+</html>
