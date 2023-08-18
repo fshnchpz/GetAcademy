@@ -68,3 +68,10 @@ a {
 a:hover {
     background-color: #ff976d;
 }
+
+.taskGrid {
+    display: inline-grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-area: auto;
+    justify-content: center;
+}

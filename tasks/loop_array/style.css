@@ -74,7 +74,7 @@ a:hover {
     background-color: #ff976d;
 }
 
-input {
+button {
     margin: 5px;
     color: white;
     font-weight: 600;
@@ -89,23 +89,13 @@ input {
     text-decoration: none;
     padding-top: 5px;
 }
-input:hover {
+button:hover {
     background-color: #ff976d;
 }
 
-#numbers { 
+#output { 
     color: #ff6e35;
     font-weight: 800px;
     font-size: 20px;
-    margin-bottom: 30px;
-}
-
-
-.vowel {
-    display: flex;
-    justify-content: center;
-    color: #ff6e35;
-    font-weight: 800px;
-    font-size: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
