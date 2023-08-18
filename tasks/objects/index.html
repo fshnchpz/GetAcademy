@@ -1,154 +1,28 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title></title>
-    <style>
-        table, tr, td, th {
-            border: 1px solid lightgray;
-            border-collapse: collapse;
-        }
-
-        td, th {
-            padding: 4px;
-        }
-
-        th {
-            background-color: #ff6e35;
-            border: 1px solid #ff6e35;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background: antiquewhite;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loop - String Vokaler</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-Oppgaver
-<ol>
-    <li>
-        Legg til person. Må kunne angis når man lager ny oppgave og må
-        kunne redigeres
-    </li>
-    <li>Legg til kolonne for frist. Bruk input-tag med type="date".
-        Konvertering til visningsformat: <tt>new Date("2019-02-13").toLocaleDateString()</tt>
-    </li>
-    <li>Lag kolonne for "gjort dato" som fylles ut automatisk når man 
-        trykker på checkboxen for at det er gjort.</li>
-
-
-</ol>
-<table id="tasksTable"></table>
-<p>
-    
-<input id="expirationDate" type="date"/><input type="text" value="person" id="person"/><input id="taskDescription" type="text"/><button onclick="addTask()">Legg til oppgave</button>
-</p>
-<script>
-    // Model
-    var tasks = [
-        {expireDate: new Date("2200-01-01").toLocaleDateString(), person: 'Johnny', description: 'Handle til middag', isDone: true, finishedDate: new Date().toLocaleDateString() },
-    ];
-
-    // Controller
-    var taskDescriptionInput = document.getElementById('taskDescription');
-    var expirationDateInput = document.getElementById('expirationDate');
-    var personInput = document.getElementById('person');
-
-    function addTask() {
-        tasks.push({
-            expireDate: expirationDateInput.value,
-            person: personInput.value,
-            description: taskDescriptionInput.value,
-            isDone: false,
-            finishedDate: ''
-        });
-        taskDescriptionInput.value = '';
-        show();
-    }
-
-    // View
-    var tasksTable = document.getElementById('tasksTable');
-    show();
-
-    function show() {
-        let html = `
-                        <tr>
-                            <th>Frist</th>
-                            <th>Person</th>
-                            <th>Oppgave</th>
-                            <th>Gjort</th>
-                            <th>Dato</th>
-                            <th>Verktøy</th>
-                        </tr>`;
-        for (let i = 0; i < tasks.length; i++) {
-            html += createHtmlRow(i);
-        }
-        tasksTable.innerHTML = html;
-    }
-
-    function createHtmlRow(i) {
-        const task = tasks[i];
-        const checkedHtml = task.isDone ? 'checked="checked"' : '';
-        if (!task.editMode)
-            return `<tr>
-                            <td>${task.expireDate}</td>
-                            <td>${task.person}</td>
-                            <td>${task.description}</td>
-                            <td><input onchange="changeIsDone(this, ${i})" type="checkbox" ${checkedHtml} /></td>
-                            <td>${task.finishedDate}</td>
-                            <td>
-                                <button onclick="deleteTask(${i})">Slett</button>
-                                <button onclick="editTask(${i})">Rediger</button>
-                            </td>
-                        </tr>
-                        `;
-        return `<tr>
-                            <td><input id="editExpire${i}" type="date" value="${task.expireDate}"/></td>
-                            <td><input id="editPerson${i}" type="text" value="${task.person}"/></td>
-                            <td><input id="editDescription${i}" type="text" value="${task.description}"/></td>
-                            <td><input onchange="changeIsDone(this, ${i})" type="checkbox" ${checkedHtml} /></td>
-                            <td>
-                                <button onclick="updateTask(${i})">Lagre</button>
-                            </td>
-                        </tr>
-                        `;
-    }
-
-    function changeIsDone(checkbox, index) {
-        tasks[index].isDone = checkbox.checked;
-        if (checkbox.checked) {
-            tasks[index].finishedDate = new Date().toLocaleDateString();
-        }
-        else {
-            tasks[index].finishedDate = '';
-        }
-
-        show();
-    }
-
-    function deleteTask(index) {
-        tasks.splice(index, 1);
-        show();
-    }
-
-    function editTask(index) {
-        tasks[index].editMode = true;
-        show();
-    }
-
-    function updateTask(index) {
-        const exp_id = document.getElementById(`editExpire${index}`);
-        const person_id = document.getElementById(`editPerson${index}`);
-        const desc_id = document.getElementById(`editDescription${index}`);
-        const task = tasks[index];
-        task.expireDate = exp_id.value;
-        task.person = person_id.value;
-        task.description = desc_id.value;
-        task.editMode = false;
-        show();
-    }
-</script>
+    <div class="wrapper">
+        <div class="container" id="html">
+            <div class="center"><h1>Objekter - Oppgave</h1></div>
+            <div class="task_container">
+                <table id="task_table"></table>
+                <div class="divider"></div>
+                <div class="taskBtns">
+                    Frist: <input id="expireDate" type="date"/><br>
+                    Navn: <input type="text" value="person" id="person"/><br>
+                    Oppgave: <input id="taskDesc" type="text"/><br>
+                    <button onclick="taskAdd()">Legg til</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script src="script.js"></script>
 </html>
