@@ -174,7 +174,7 @@ function viewHTML() {
         <div class="divider"></div>
 
         <div id="forecast3" class="forecast center">
-                <h2>I dag (nå)</h2>
+                <h2>Over i morgen (kl.12)</h2>
                 <div class="celsius">${Temperature3} °C</div>
                 <div class="weather_symbol col"><img src="icons/${weather_img(weather3)}" class="weather_img"/>
                 Neste 6 timer</div>
