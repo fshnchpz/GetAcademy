@@ -1,0 +1,280 @@
+body {
+    background-color: #e9e9e9;
+    height: 100%;
+    background: url('img/bg.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 10%;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    min-width: 800px;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    padding: 3rem;
+}
+
+.logoGET{
+    width: 90%;
+}
+
+.divider {
+    background-color:#c9c9c9;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    height: 1px;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+h1 {
+    font-family: sans-serif;
+    font-size: 23px;
+    color:#ff6e35;
+}
+h2 {
+    font-family: sans-serif;
+    font-size: 18px;
+    color:#ff6e35;
+}
+
+a {
+    margin: 5px;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    border-color: #ff6e35;
+    background-color: #ff6e35;
+    border-style: none;
+    height: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+    padding-top: 5px;
+}
+a:hover {
+    background-color: #ff976d;
+}
+
+button {
+    margin: 5px;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    border-color: #ff6e35;
+    background-color: #ff6e35;
+    border-style: none;
+    height: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+    padding-top: 5px;
+}
+button:hover {
+    background-color: #ff976d;
+}
+input {
+    margin: 5px;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    border:#ff6e35 solid 1px;
+    border-radius: 0.4rem;
+    border-color: #ce5b2d;
+    background-color: #ffbb93;
+    height: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+}
+input:hover {
+    background-color: #ffffff;
+}
+
+td, th {
+    margin: 5px;
+    padding: 4px;
+    border-radius: 3px;
+}
+
+th {
+    background-color: #ff6e35;
+    border: 1px solid #ff6e35;
+    color: rgb(255, 255, 255);
+    border-radius: 7px;
+    height: 20px;
+}
+td {
+    border: 1px solid #ff6e35;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.char_select {
+    display: flex;
+    flex-direction: row;
+}
+.select_user {
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2,110px);
+}
+.select_enemy {
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2,110px);
+    position: relative;
+    justify-content: end;
+    
+}
+.selectBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100px;
+    border: solid #ff6e35 2px;
+    margin: 5px;
+    border-radius: 15px;
+}
+
+.select_img {
+    height: 100%;
+}
+
+.game_display {
+    border: solid #ff6e35 3px;
+    height: 350px;
+    border-radius: 25px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background-image: url('img/mario_bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bg {
+    height: 100%;
+    width: 100%;
+    background-image: url('img/mario_bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.4;
+}
+
+.game_grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.char_user {
+     grid-area: 1 / 1 / 5 / 3; 
+     height: 240px;
+     padding: 20px;
+}
+.hp_user { 
+    grid-area: 5 / 1 / 6 / 3; 
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+}
+.char_enemy { 
+    grid-area: 1 / 4 / 5 / 6; 
+    height: 240px;
+}
+.hp_enemy { 
+    grid-area: 5 / 4 / 6 / 6; 
+    display: flex;
+    flex-direction: column;
+}
+.split { 
+    grid-area: 1 / 3 / 6 / 4; 
+}
+.char {
+    height: 100%;
+}
+
+.hpbar {
+    display: block;
+    position: relative;
+    height: 25px;
+    width: 225px;
+    background-image: url('img/hpbar.png');
+    background-size: cover;
+}
+.hpbar_full {
+    display: block;
+    border: none;
+    height: 19px;
+    background-image: url('img/hpbar_full.png');
+    background-size: cover;
+    margin: 3px;
+}
+.hpTxt {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.fight { 
+    width: 110px;
+    height: 110px;
+    background-image: url('img/fight.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.shroom { 
+    width: 110px;
+    height: 110px;
+    background-image: url('img/shroom.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.bowser_shroom { 
+    width: 110px;
+    height: 110px;
+    background-image: url('img/bowser_shroom.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
