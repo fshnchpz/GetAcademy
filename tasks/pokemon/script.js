@@ -44,13 +44,13 @@ function viewHTML() {
 
 function switchPKMN(pkmn) {
     pkmn_user = pkmn;
-    if (pkmn = "venusaur"){
+    if (pkmn == "venusaur"){
         pkmn_user_type = `<div class="type_user pkmn_type_ico grass">Grass</div>`;
     }
-    if (pkmn = "blastoise"){
+    if (pkmn == "blastoise"){
         pkmn_user_type = `<div class="type_user pkmn_type_ico water">Water</div>`;
     }
-    if (pkmn = "charizard"){
+    if (pkmn == "charizard"){
         pkmn_user_type = `<div class="type_user pkmn_type_ico fire">Fire</div>`;
     }
 
