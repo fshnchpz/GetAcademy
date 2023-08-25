@@ -118,6 +118,7 @@ td {
 }
 
 .game_app {
+    position: relative;
     overflow: hidden;
     background: url('img/pkmn_bg.gif') no-repeat;
     background-position-y: -27px;
@@ -128,37 +129,58 @@ td {
 }
 
 #pkmn_sprite_front {
-    height: 120px;
-    width: 120px;
-    position:relative;
+    height: 200px;
+    width: 200px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    left: 63%;
-    top: 5%;
+    position: absolute;
+    left: 57%;
+    bottom: 42%;
+    /* border: solid red 2px; */
+    justify-content: left;
+    align-items:end;
 
 }
 
 #pkmn_sprite_back {
-    height: 150px;
-    width: 150px;
-    position:relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: 21%;
-    top: -8%;
-    
+    height: 200px;
+    width: 200px;
+    display:flex;
+    position: absolute;
+    left: 20%;
+    bottom: 19%;
+    /* border: solid red 2px; */
+    justify-content: right;
+    align-items:end;
 }
 
-.pkmn {
-    width: 179px;
-    height: 179px;
+.pkmn_user {
+    display: flex;
+    position: relative;
+    -moz-transform:scale(2);
+    -webkit-transform:scale(2);
+    transform:scale(2);
+    width: min-content;
+    height: min-content;
+    right: 80px;
+    bottom: 50px;
+    z-index: 2;
+}
+.pkmn_enemy {
+    display: flex;
+    position: relative;
+    -moz-transform:scale(2);
+    -webkit-transform:scale(2);
+    transform:scale(2);
+    width: min-content;
+    height: min-content;
+    left: 60px;
+    bottom: 50px;
+    z-index: 2;
 }
 
 .pkmn_sel_box {
-    width: 95px;
-    height: 95px;
+    width: 80px;
+    height: 80px;
     border: solid 2px rgb(61, 61, 61);
     border-radius: 20px;
     margin-left: 10px;
@@ -178,35 +200,16 @@ td {
     background-color: #b6b6b6;
 }
 
-.venusaur {
-    background: url('img/venusaur.gif') center;
-    background-size: cover;
+.switch {
     height: 100%;
     width: 100%;
     border: none;
     background-color: #ffffff;
     border-radius: 10px;
     cursor: pointer;
-}
-.blastoise {
-    background: url('img/blastoise.gif') center;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-    border: none;
-    background-color: #ffffff;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.charizard {
-    background: url('img/charizard.gif') center;
-    background-size: cover;
-    height: 100%;
-    width: 100%;
-    border: none;
-    background-color: #ffffff;
-    border-radius: 10px;
-    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
 }
 
 .pkmn_type_ico {
@@ -227,26 +230,26 @@ td {
     transition: opacity .4s;
 }
 
-.water {
+.Water {
     background-color: #39f;
 }
-.fire {
+.Fire {
     background-color: #f42;
 }
-.grass {
+.Grass {
     background-color: #7c5;
 }
 .type_enemy {
-    position: relative;
-    left: 67%;
-    top: 59%
+    position: absolute;
+    right: 1%;
+    top: 18%
 
 }
 
 .type_user {
-    position: relative;
-    left: 28%;
-    top: 3%
+    position: absolute;
+    left: 1%;
+    bottom: 19%
 }
 
 .textbox {
@@ -262,4 +265,84 @@ td {
 @font-face {
     font-family: 'pkmn'; /*a name to be used later*/
     src: url('PKMN_RBYGSC.ttf'); /*URL to font*/
+}
+
+@font-face {
+    font-family: 'pkmn_dp';
+    src: url('pokemon-dp-pro.ttf');
+}
+
+.rel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.user_info {
+    display: block;
+    position: absolute;
+    background: url('img/user_info.png') no-repeat;
+    height: 59px;
+    width: 185px;
+    left:0;
+    bottom: 5%;
+    z-index: 3;
+}
+
+.enemy_info {
+    display: block;
+    position: absolute;
+    background: url('img/enemy_info.png') no-repeat;
+    height: 49px;
+    width: 181px;
+    right:0;
+    top: 5%;
+    z-index: 3;
+}
+
+.user_hpfield {
+    display: block;
+    position: absolute;
+    height: 16px;
+    width: 107px;
+    background: url('img/hp_bar.png') no-repeat;
+    left: 10px;
+    top: 24px;
+    z-index: 5;
+}
+.hp_bar_user {
+    display: block;
+    position: absolute;
+    height: 6px;
+    width: 76px;
+    z-index: 3;
+    top: 29px;
+    left: 35px;
+    background-color: rgb(88, 255, 73);
+}
+
+.user_HP_num {
+    position: absolute;
+    display: flex;
+    font-family: 'pkmn_dp';
+    font-size: 18px;
+    bottom: 3px;
+    left: 45px;
+    color:rgb(83, 83, 83);
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.644);
+}
+.user_pkmn_name {
+    position: absolute;
+    display: flex;
+    font-family: 'pkmn_dp';
+    font-size: 23px;
+    top: 2px;
+    left: 20px;
+    color:rgb(83, 83, 83);
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    text-align: left;
 }
