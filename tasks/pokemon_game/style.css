@@ -214,42 +214,119 @@ td {
 
 .pkmn_type_ico {
     display: inline-block;
-    width: 66px;
-    margin-bottom: 4px;
+    font-family: "Fira Sans","Trebuchet MS",Ubuntu,Helvetica,Arial,sans-serif;
+    width: 50px;
+    height: 20px;
     background: #dbdbdb;
     border: 1px solid #a3a3a3;
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.671);
     color: #fff;
-    font-size: .75rem;
+    font-size: .7rem;
     font-weight: normal;
-    line-height: 1.5rem;
+    line-height: 20px;
     text-align: center;
     text-shadow: 1px 1px 2px rgba(0,0,0,.7);
     text-transform: uppercase;
-    transition: opacity .4s;
+    margin-left: 3px;
+}
+
+.Normal {
+    background: #aa9;
+}
+
+.Fire {
+    background: #f42;
 }
 
 .Water {
-    background-color: #39f;
+    background: #39f;
 }
-.Fire {
-    background-color: #f42;
+
+.Electric {
+    background: #fc3;
 }
+
 .Grass {
-    background-color: #7c5;
+    background: #7c5;
 }
+
+.Ice {
+    background: #6cf;
+}
+
+.Fighting {
+    background: #b54;
+}
+
+.Poison {
+    background: #a59;
+}
+
+.Ground {
+    background: #db5;
+}
+
+.Flying {
+    background: #89f;
+}
+
+.Psychic {
+    background: #f59;
+}
+
+.Bug {
+    background: #ab2;
+}
+
+.Rock {
+    background: #ba6;
+}
+
+.Ghost {
+    background: #66b;
+}
+
+.Dragon {
+    background: #76e;
+}
+
+.Dark {
+    background: #754;
+}
+
+.Steel {
+    background: #aab;
+}
+
+.Fairy {
+    background: #e9e;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .type_enemy {
     position: absolute;
     right: 1%;
-    top: 18%
+    top: 17.5%;
 
 }
 
 .type_user {
     position: absolute;
     left: 1%;
-    bottom: 19%
+    bottom: 20.5%;
 }
 
 .textbox {
@@ -315,10 +392,28 @@ td {
     display: block;
     position: absolute;
     height: 6px;
-    width: 76px;
     z-index: 3;
     top: 29px;
     left: 35px;
+    background-color: rgb(88, 255, 73);
+}
+.enemy_hpfield {
+    display: block;
+    position: absolute;
+    height: 16px;
+    width: 107px;
+    background: url('img/hp_bar.png') no-repeat;
+    right: 8px;
+    top: 28px;
+    z-index: 5;
+}
+.hp_bar_enemy {
+    display: block;
+    position: absolute;
+    height: 6px;
+    z-index: 3;
+    top: 33px;
+    left: 89px;
     background-color: rgb(88, 255, 73);
 }
 
@@ -333,6 +428,17 @@ td {
     font-weight: 600;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.644);
 }
+.enemy_HP_num {
+    position: absolute;
+    display: flex;
+    font-family: 'pkmn_dp';
+    font-size: 18px;
+    bottom: 18px;
+    left: 110px;
+    color:rgb(83, 83, 83);
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.644);
+}
 .user_pkmn_name {
     position: absolute;
     display: flex;
@@ -340,6 +446,19 @@ td {
     font-size: 23px;
     top: 2px;
     left: 20px;
+    color:rgb(83, 83, 83);
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    text-align: left;
+}
+.enemy_pkmn_name {
+    position: absolute;
+    display: flex;
+    font-family: 'pkmn_dp';
+    font-size: 23px;
+    top: 2px;
+    left: 30px;
     color:rgb(83, 83, 83);
     font-weight: 600;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
