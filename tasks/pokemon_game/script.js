@@ -285,6 +285,7 @@ function loadPartyHTML() {
   let pkmn_inParty = pkmn_party.length;
   let empty_boxes = 6 - (pkmn_inParty + 1);
   pkmn_party_html = "";
+  let box = 0;
 
   for (let i = 0; i < pkmn_inParty; i++) {
     pkmn_party_html += /*HTML*/ `
@@ -295,7 +296,15 @@ function loadPartyHTML() {
                 </div>
             </div>
         </div>
+        
   `;
+  if (box == 6) {
+    pkmn_party_html += '<br>';
+    box = 0;
+  }
+  else {
+    box++;
+  }
   }
   for (let i = 0; i < empty_boxes; i++) {
     pkmn_party_html += /*HTML*/ `
@@ -306,7 +315,15 @@ function loadPartyHTML() {
             </div>
         </div>
     `;
+    if (box == 6) {
+        pkmn_party_html += '<br>';
+        box = 0;
+      }
+      else {
+        box++;
+      }
   }
+  
 }
 viewHTML();
 
