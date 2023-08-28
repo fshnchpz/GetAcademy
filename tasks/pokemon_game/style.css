@@ -227,6 +227,8 @@ td {
 }
 
 .switch {
+    display:flex;
+    align-items: center;
     width: 80px;
     height: 80px;
     border: none;
@@ -235,7 +237,6 @@ td {
     cursor: pointer;
     display: flex;
     justify-content: center;
-    padding-bottom: 20px;
 }
 
 .pkmn_type_ico {

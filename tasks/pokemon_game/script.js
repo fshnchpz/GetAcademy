@@ -256,9 +256,9 @@ function getTypes() {
 }
 function getSprite(id, isUser) {
     if (isUser) {
-        return`<img src="img/${pkmn_party[id].id.toLowerCase()}_b.gif" class="pkmn_user ${user_dead}" id="pk_user"/>`;
+        return`<img src="https://img.pokemondb.net/sprites/black-white/anim/back-normal/${pkmn_party[id].id.toLowerCase()}.gif" class="pkmn_user ${user_dead}" id="pk_user"/>`;
     } else {
-        return `<img src="img/${enemy_party[id].id.toLowerCase()}.gif" class="pkmn_enemy ${enemy_dead}" id="pk_enemy"/>`;
+        return `<img src="https://img.pokemondb.net/sprites/black-white/anim/normal/${enemy_party[id].id.toLowerCase()}.gif" class="pkmn_enemy ${enemy_dead}" id="pk_enemy"/>`;
     }
 }
 function funcDamage(Attacker, Defender, Move_id) {
@@ -364,7 +364,7 @@ function loadPartyHTML() {
             <div class="pkmn_sel_box center">  
                 <div class="pkmn_sel center">  
                     <div onclick="switchPKMN('${i}')" class="switch">
-                        <img class="fainted" src="img/party/${pkmn_party[i].id.toLowerCase()}.png"/>
+                        <img class="fainted" src="https://img.pokemondb.net/sprites/black-white/normal/${pkmn_party[i].id.toLowerCase()}.png"/>
                     </div>
                 </div>
             </div>
@@ -374,7 +374,7 @@ function loadPartyHTML() {
         <div class="pkmn_sel_box center">  
             <div class="pkmn_sel center">  
                 <div onclick="switchPKMN('${i}')" class="switch">
-                    <img src="img/party/${pkmn_party[i].id.toLowerCase()}.png"/>
+                    <img src="https://img.pokemondb.net/sprites/black-white/normal/${pkmn_party[i].id.toLowerCase()}.png"/>
                 </div>
             </div>
         </div>
