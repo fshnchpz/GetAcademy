@@ -301,8 +301,8 @@ function funcDamage(Attacker, Defender, Move_id) {
     DMG = Math.floor(((((2 * Level) + 10)/250) * (ATK_Stat/DEF_Stat) * (Power) + 2) * iStabMult);
     
     DMG = TypeEffectiveness(DMG,MoveType,EnemyTypes);
-    let RNG = Math.random(Math.random()* 100);
-
+    let RNG = Math.floor(Math.random() * 100);
+    console.log(Accuracy + ' / ' + RNG);
     if (Accuracy >= RNG) {
         if (TypeEffMult(MoveType,EnemyTypes) < 1) {
             pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} for ${DMG} damage.<br> It's not effective`;
