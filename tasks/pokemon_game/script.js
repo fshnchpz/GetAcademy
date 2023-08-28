@@ -1,4 +1,5 @@
 let HTMLcode = document.getElementById("myHTML");
+let MovesHTML = "";
 let pkmn_user = "None";
 let pkmn_user_spr = "";
 let pkmn_user_type = "";
@@ -9,15 +10,16 @@ let pkmn_text = "Select your pokemon";
 let party_sel = 0;
 let previous_sel = 0;
 let enemy_sel = 0;
+let firstSwitch = true;
 
 let game_state = "in_battle";
 
 let pkmn_party = [
-    {"id":"venusaur","type":["Grass"],"curHP":270, "maxHP":270,"attack":152,"defense":153,"sp_atk":184,"sp_def":184,"speed":148,"moves":["Solar Beam"]},
-    {"id":"blastoise","type":["Water"],"curHP":268, "maxHP":268,"attack":153,"defense":184,"sp_atk":157,"sp_def":193,"speed":144,"moves":["Hydro Pump"]},
-    {"id":"charizard","type":["Fire"],"curHP":266, "maxHP":266,"attack":155,"defense":144,"sp_atk":200,"sp_def":157,"speed":184,"moves":["Fire Blast"]},
-    {"id":"Flygon","type":["Ground","Dragon"],"curHP":270, "maxHP":270,"attack":184,"defense":148,"sp_atk":148,"sp_def":148,"speed":184,"moves":["Dragon Rush"]},
-    {"id":"Rotom-frost","type":["Electric","Ice"],"curHP":210, "maxHP":210,"attack":121,"defense":197,"sp_atk":193,"sp_def":197,"speed":159,"moves":["Thunder","Blizzard"]}
+    {"id":"venusaur","name":"Venusaur","type":["Grass"],"curHP":270, "maxHP":270,"attack":152,"defense":153,"sp_atk":184,"sp_def":184,"speed":148,"moves":["Solar Beam"]},
+    {"id":"blastoise","name":"Blastoise","type":["Water"],"curHP":268, "maxHP":268,"attack":153,"defense":184,"sp_atk":157,"sp_def":193,"speed":144,"moves":["Hydro Pump"]},
+    {"id":"charizard","name":"Charizard","type":["Fire"],"curHP":266, "maxHP":266,"attack":155,"defense":144,"sp_atk":200,"sp_def":157,"speed":184,"moves":["Fire Blast"]},
+    {"id":"Flygon","name":"Flygon","type":["Ground","Dragon"],"curHP":270, "maxHP":270,"attack":184,"defense":148,"sp_atk":148,"sp_def":148,"speed":184,"moves":["Dragon Rush"]},
+    {"id":"Rotom-frost","name":"Rotom","type":["Electric","Ice"],"curHP":210, "maxHP":210,"attack":121,"defense":197,"sp_atk":193,"sp_def":197,"speed":159,"moves":["Thunder","Blizzard"]}
 ];
 const data_moves = [
     { "id":"Solar Beam", "Power": 120, "mType":"Grass", "Special":true,"Accuracy":100},
@@ -50,6 +52,7 @@ let pkmn_party_html = "";
 function viewHTML() {
   loadPartyHTML();
   let TypesHTML = getTypes();
+  loadMovesHTML();
   if (game_state == "in_battle") {
     let newhtml = /*HTML*/ `
             <div class="game_app">
@@ -59,7 +62,7 @@ function viewHTML() {
 
                 <div class="user_info">
                     <div class="rel">
-                        <div class="user_pkmn_name">${pkmn_party[party_sel].id}</div>
+                        <div class="user_pkmn_name">${pkmn_party[party_sel].name}</div>
                         <div class="user_hpfield"></div>
                         <div class="hp_bar_user" style="width: ${getPixelPerc(76,pkmn_party[party_sel].curHP,pkmn_party[party_sel].maxHP)}px;"></div>
                         <div class="user_HP_num">${pkmn_party[party_sel].curHP} / ${pkmn_party[party_sel].maxHP}</div>
@@ -67,16 +70,21 @@ function viewHTML() {
                 </div>
                 <div class="enemy_info">
                     <div class="rel">
-                        <div class="enemy_pkmn_name">${enemy_party[enemy_sel].id}</div>
+                        <div class="enemy_pkmn_name">${enemy_party[enemy_sel].name}</div>
                         <div class="enemy_hpfield"></div>
                         <div class="hp_bar_enemy" style="width: ${getPixelPerc(76,enemy_party[enemy_sel].curHP,enemy_party[enemy_sel].maxHP)}px;"></div>
                         <div class="enemy_HP_num">${enemy_party[enemy_sel].curHP} / ${enemy_party[enemy_sel].maxHP}</div>
                     </div>
                 </div>
+                <div class="moves_Cont">
+                    ${MovesHTML}
+                </div>
             </div>
             <div class="divider"></div>
             <div class="center">
+            <div class="textboxo">
                 <div id="textbox" class="textbox center">${pkmn_text}</div>
+                </div>
             </div>
             <div class="game_sel center">
                 ${pkmn_party_html}
@@ -84,6 +92,27 @@ function viewHTML() {
         `;
     HTMLcode.innerHTML = newhtml;
   }
+}
+function loadMovesHTML() {
+    let PKMN = pkmn_party[party_sel];
+    MovesHTML = "";
+    for (i=0; i<PKMN.moves.length; i++) {
+
+        let fMove = data_moves.find((tMove) => tMove.id === PKMN.moves[i]);
+        let SpecialVar = "";
+        if (fMove.Special) {
+            SpecialVar = 'special';
+        } else {
+            SpecialVar = 'physical';
+        }
+        MovesHTML += /*HTML*/`
+            <div class="move_outer ${fMove.mType}" onClick="useMove('${i}',false)">
+                <div class="move_box">
+                    <div class="move_name">${fMove.id}</div><div class="move_power">${fMove.Power}</div><div class="move_type"><div class="pkmn_type_icox ${fMove.mType}">${fMove.mType}</div></div><div class="move_damage"><img src="img/move-${SpecialVar}.png"></div>
+                </div> 
+            </div>
+        `;
+    }
 }
 
 function switchPKMN(pkmn) {
@@ -102,24 +131,44 @@ function switchPKMN(pkmn) {
   previous_sel = pkmn;
 
   wildEncounter();
+  viewHTML();
+  if (switched) {
+    if (firstSwitch){
+        firstSwitch = false;
+    }
+    else {
+        useMove(0,true);
+    }
+  }
+}
+
+function useMove(move_index, switched) {
+    let rand = Math.floor(Math.random() * enemy_party[enemy_sel].moves.length);
+    
   if (pkmn_party[party_sel].curHP > 0 || enemy_party[enemy_sel].curHP > 0) {
-    if (enemy_party[enemy_sel].speed > pkmn_party[party_sel].speed || switched){
-        PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].id} moves first ...`);
-        setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[0]);
-        setTimeout(PKMN_Msgboard,3000,`Your ${pkmn_party[party_sel].id} moves next ...`);
-        setTimeout(funcDamage,5000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[0]);
+    if (!switched) {
+        if (enemy_party[enemy_sel].speed > pkmn_party[party_sel].speed){
+            PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].name} moves first ...`);
+            setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
+            setTimeout(PKMN_Msgboard,3000,`Your ${pkmn_party[party_sel].name} moves next ...`);
+            setTimeout(funcDamage,5000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[move_index]);
+        }
+        else
+        {
+            PKMN_Msgboard(`Your ${pkmn_party[party_sel].name} moves first ...`);
+            setTimeout(funcDamage,2000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[move_index]);
+            setTimeout(PKMN_Msgboard,3000,`Opponent ${enemy_party[enemy_sel].name} moves next ...`);
+            setTimeout(funcDamage,5000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
+        }
     }
     else
     {
-        PKMN_Msgboard(`Your ${pkmn_party[party_sel].id} moves first ...`);
-        setTimeout(funcDamage,2000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[0]);
-        setTimeout(PKMN_Msgboard,3000,`Opponent ${enemy_party[enemy_sel].id} moves next ...`);
-        setTimeout(funcDamage,5000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[0]);
+        PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].name} moves first ...`);
+        setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
     }
   }
-  
-  
 }
+
 function wildEncounter() {
     let id = enemy_sel;
 
@@ -169,6 +218,7 @@ function funcDamage(Attacker, Defender, Move_id) {
     let MoveType = aMove.mType;
     let isPhys = aMove.Special;
     let Power = aMove.Power;
+    let Accuracy = aMove.Accuracy;
     let iStabMult = 1;
     let ATK_Stat;
     let DEF_Stat;
@@ -198,17 +248,30 @@ function funcDamage(Attacker, Defender, Move_id) {
     DMG = Math.floor(((((2 * Level) + 10)/250) * (ATK_Stat/DEF_Stat) * (Power) + 2) * iStabMult);
     
     DMG = TypeEffectiveness(DMG,MoveType,EnemyTypes);
-    Defender.curHP -= DMG; 
-    
-    
-    pkmn_text = `${(Attacker.id.toUpperCase())} hit ${(Defender.id.toUpperCase())} for ${DMG} damage !`;
+    let RNG = Math.random(Math.random()* 100);
 
-    
-    if (Defender.curHP < 0) {
-        Defender.curHP = 0;
+    if (Accuracy >= RNG) {
+        if (TypeEffMult(MoveType,EnemyTypes) < 1) {
+            pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} for ${DMG} damage.<br> It's not effective`;
+        } else if (TypeEffMult(MoveType,EnemyTypes) > 1){
+            pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} for ${DMG} damage.<br> It's super effective!`;
+        } else {
+            pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} for ${DMG} damage !`;
+        }
+        
+            Defender.curHP -= DMG; 
 
-        setTimeout(PKMN_Msgboard, 2000,`${Defender.id.toUpperCase()} has fainted !`);
+        if (Defender.curHP < 0) {
+            Defender.curHP = 0;
+    
+            setTimeout(PKMN_Msgboard, 2000,`${Defender.name.toUpperCase()} has fainted !`);
+        }
+    } else {
+        pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} but missed !`;
     }
+    
+    
+    
     
     viewHTML();
 }
@@ -698,4 +761,455 @@ function TypeEffectiveness(DMG, Type,onType) {
     newDMG = DMG;
 
     return newDMG;
+}
+function TypeEffMult(Type,onType) {
+    let DMGInc = 1;
+    let DMGDec = 1;
+    let DMGNull = 1;
+    let DMG = 1;
+
+    for (let i=0; i < onType.length; i++){
+        if (onType[i] == "Normal") { //Defense Type
+            if (Type == "Ghost") { //Offense Type
+                DMGNull = 0; 
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+        
+        if (onType[i] == "Fire") { //Defense Type
+            if (Type == "Water") { //Offense Type
+                DMGInc *= 2; 
+            }
+            if (Type == "Ground") { //Offense Type
+                DMGInc *= 2; 
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGInc *= 2; 
+            }
+
+            if (Type == "Fire") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Ice") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fairy") { //Offense Type
+                DMGDec *= 2; 
+            }
+        }
+
+        if (onType[i] == "Water") { //Defense Type
+            if (Type == "Fire") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Water") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Ice") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGDec *= 2; 
+            }
+
+            if (Type == "Electric") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Electric") { //Defense Type
+            if (Type == "Electric") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Flying") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGDec *= 2; 
+            }
+
+            if (Type == "Ground") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Grass") { //Defense Type
+            if (Type == "Water") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Electric") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Ground") { //Offense Type
+                DMGDec *= 2; 
+            }
+
+            if (Type == "Fire") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Ice") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Poison") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Flying") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Ice") { //Defense Type
+            if (Type == "Ice") { //Offense Type
+                DMGDec *= 2; 
+            }
+
+            if (Type == "Fire") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Fighting") { //Defense Type
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Dark") { //Offense Type
+                DMGDec *= 2; 
+            }
+
+            if (Type == "Flying") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Psychic") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Fairy") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Poison") { //Defense Type
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Poison") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fairy") { //Offense Type
+                DMGDec *= 2; 
+            }
+
+            if (Type == "Ground") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Psychic") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Ground") { //Defense Type
+            if (Type == "Electric") { //Offense Type
+                DMGNull = 0; 
+            }
+
+            if (Type == "Poison") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Water") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Ice") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Flying") { //Defense Type
+            if (Type == "Ground") { //Offense Type
+                DMGNull = 0; 
+            }
+
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Electric") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Ice") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Psychic") { //Defense Type
+            if (Type == "Fighting") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Psychic") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Bug") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Ghost") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Dark") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Bug") { //Defense Type
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Ground") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Fire") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Flying") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Rock") { //Defense Type
+            if (Type == "Normal") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fire") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Poison") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Flying") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Water") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Ground") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Ghost") { //Defense Type
+            if (Type == "Normal") { //Offense Type
+                DMGNull = 0; 
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGNull = 0; 
+            }
+
+            if (Type == "Poison") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Ghost") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Dark") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Dragon") { //Defense Type
+            if (Type == "Fire") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Water") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Electric") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Ice") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Dragon") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Fairy") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Dark") { //Defense Type
+            if (Type == "Psychic") { //Offense Type
+                DMGNull = 0; 
+            }
+
+            if (Type == "Ghost") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Dark") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Fighting") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Fairy") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Steel") { //Defense Type
+            if (Type == "Poison") { //Offense Type
+                DMGNull = 0; 
+            }
+
+            if (Type == "Normal") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Grass") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Ice") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Flying") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Psychic") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Rock") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Dragon") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Fairy") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Fire") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Fighting") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Ground") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+
+        if (onType[i] == "Fairy") { //Defense Type
+            if (Type == "Dragon") { //Offense Type
+                DMGNull = 0; 
+            }
+
+            if (Type == "Fighting") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Bug") { //Offense Type
+                DMGDec *= 2; 
+            }
+            if (Type == "Dark") { //Offense Type
+                DMGDec *= 2; 
+            }
+            
+            if (Type == "Poison") { //Offense Type
+                DMGInc *= 2;
+            }
+            if (Type == "Steel") { //Offense Type
+                DMGInc *= 2;
+            }
+        }
+    }
+
+    DMG = Math.floor(DMG * DMGInc);
+    DMG = Math.floor(DMG / DMGDec);
+    DMG = Math.floor(DMG * DMGNull);
+
+    return DMG;
 }
