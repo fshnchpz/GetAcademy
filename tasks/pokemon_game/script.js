@@ -11,6 +11,9 @@ let party_sel = 0;
 let previous_sel = 0;
 let enemy_sel = 0;
 let firstSwitch = true;
+let game_ready = true;
+let user_dead = "";
+let enemy_dead = "";
 
 let game_state = "in_battle";
 
@@ -51,8 +54,11 @@ let pkmn_party_html = "";
 
 function viewHTML() {
   loadPartyHTML();
+  MovesHTML = "";
   let TypesHTML = getTypes();
-  loadMovesHTML();
+  if (game_ready && user_dead != "fainted") {
+    loadMovesHTML();
+  }
   if (game_state == "in_battle") {
     let newhtml = /*HTML*/ `
             <div class="game_app">
@@ -94,28 +100,37 @@ function viewHTML() {
   }
 }
 function loadMovesHTML() {
-    let PKMN = pkmn_party[party_sel];
-    MovesHTML = "";
-    for (i=0; i<PKMN.moves.length; i++) {
-
-        let fMove = data_moves.find((tMove) => tMove.id === PKMN.moves[i]);
-        let SpecialVar = "";
-        if (fMove.Special) {
-            SpecialVar = 'special';
-        } else {
-            SpecialVar = 'physical';
+    if (!game_ready){
+        MovesHTML = "";
+    }
+    else{
+        let PKMN = pkmn_party[party_sel];
+        MovesHTML = "";
+        for (i=0; i<PKMN.moves.length; i++) {
+    
+            let fMove = data_moves.find((tMove) => tMove.id === PKMN.moves[i]);
+            let SpecialVar = "";
+            if (fMove.Special) {
+                SpecialVar = 'special';
+            } else {
+                SpecialVar = 'physical';
+            }
+            MovesHTML += /*HTML*/`
+                <div class="move_outer ${fMove.mType}" onClick="useMove('${i}',false)">
+                    <div class="move_box">
+                        <div class="move_name">${fMove.id}</div><div class="move_power">${fMove.Power}</div><div class="move_type"><div class="pkmn_type_icox ${fMove.mType}">${fMove.mType}</div></div><div class="move_damage"><img src="img/move-${SpecialVar}.png"></div>
+                    </div> 
+                </div>
+            `;
         }
-        MovesHTML += /*HTML*/`
-            <div class="move_outer ${fMove.mType}" onClick="useMove('${i}',false)">
-                <div class="move_box">
-                    <div class="move_name">${fMove.id}</div><div class="move_power">${fMove.Power}</div><div class="move_type"><div class="pkmn_type_icox ${fMove.mType}">${fMove.mType}</div></div><div class="move_damage"><img src="img/move-${SpecialVar}.png"></div>
-                </div> 
-            </div>
-        `;
     }
 }
 
 function switchPKMN(pkmn) {
+    viewHTML();
+    if (!game_ready){
+        return;
+    }
     let switched = false;
   pkmn_user = pkmn_party[pkmn].id;
   pkmn_user_type = `
@@ -129,6 +144,10 @@ function switchPKMN(pkmn) {
     switched = true;
   }
   previous_sel = pkmn;
+  
+  if (pkmn_party[party_sel].curHP > 0) {
+    user_dead = "";
+  }
 
   wildEncounter();
   viewHTML();
@@ -141,32 +160,66 @@ function switchPKMN(pkmn) {
     }
   }
 }
+function anim_hurt(isPlayer) {
+    if (isPlayer){
+        if (document.getElementById('pk_user').style.opacity != 0) {
+        document.getElementById('pk_user').style.opacity = 0;
+    } else {
+        document.getElementById('pk_user').style.opacity = 100;
+    }
+    } else 
+    if (document.getElementById('pk_enemy').style.opacity != 0) {
+        document.getElementById('pk_enemy').style.opacity = 0;
+    } else {
+        document.getElementById('pk_enemy').style.opacity = 100;
+    }
+}
 
 function useMove(move_index, switched) {
+    
+    viewHTML();
+    if (!game_ready){
+        return;
+    }
     let rand = Math.floor(Math.random() * enemy_party[enemy_sel].moves.length);
     
   if (pkmn_party[party_sel].curHP > 0 || enemy_party[enemy_sel].curHP > 0) {
     if (!switched) {
         if (enemy_party[enemy_sel].speed > pkmn_party[party_sel].speed){
+            firstSwitch = false;
+            game_ready = false;
             PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].name} moves first ...`);
             setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
             setTimeout(PKMN_Msgboard,3000,`Your ${pkmn_party[party_sel].name} moves next ...`);
             setTimeout(funcDamage,5000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[move_index]);
+            setTimeout(readyGame,5500);
+            setTimeout(viewHTML,5600);
         }
         else
         {
+            firstSwitch = false;
+            game_ready = false;
             PKMN_Msgboard(`Your ${pkmn_party[party_sel].name} moves first ...`);
             setTimeout(funcDamage,2000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[move_index]);
             setTimeout(PKMN_Msgboard,3000,`Opponent ${enemy_party[enemy_sel].name} moves next ...`);
             setTimeout(funcDamage,5000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
+            setTimeout(readyGame,5500);
+            setTimeout(viewHTML,5600);
         }
     }
     else
     {
+        game_ready = false;
         PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].name} moves first ...`);
         setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
+        setTimeout(readyGame,2500);
+        setTimeout(viewHTML,2600);
     }
   }
+}
+
+function readyGame(){
+    game_ready = true;
 }
 
 function wildEncounter() {
@@ -203,9 +256,9 @@ function getTypes() {
 }
 function getSprite(id, isUser) {
     if (isUser) {
-        return`<img src="img/${pkmn_party[id].id.toLowerCase()}_b.gif" class="pkmn_user"/>`;
+        return`<img src="img/${pkmn_party[id].id.toLowerCase()}_b.gif" class="pkmn_user ${user_dead}" id="pk_user"/>`;
     } else {
-        return `<img src="img/${enemy_party[id].id.toLowerCase()}.gif" class="pkmn_enemy"/>`;
+        return `<img src="img/${enemy_party[id].id.toLowerCase()}.gif" class="pkmn_enemy ${enemy_dead}" id="pk_enemy"/>`;
     }
 }
 function funcDamage(Attacker, Defender, Move_id) {
@@ -258,18 +311,36 @@ function funcDamage(Attacker, Defender, Move_id) {
         } else {
             pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} for ${DMG} damage !`;
         }
-        
+            if (DMG != 0){
+                if (Defender === pkmn_party[party_sel]) {
+                    setTimeout(anim_hurt,100,true);
+                    setTimeout(anim_hurt,200,true);
+                    setTimeout(anim_hurt,300,true);
+                    setTimeout(anim_hurt,400,true);
+                } else {
+                    setTimeout(anim_hurt,200,false);
+                    setTimeout(anim_hurt,300,false);
+                    setTimeout(anim_hurt,400,false);
+                    setTimeout(anim_hurt,500,false);
+                }
+            }
             Defender.curHP -= DMG; 
 
         if (Defender.curHP < 0) {
             Defender.curHP = 0;
     
             setTimeout(PKMN_Msgboard, 2000,`${Defender.name.toUpperCase()} has fainted !`);
+
+            if (Defender === pkmn_party[party_sel]) {
+                user_dead = "fainted";
+                firstSwitch = true;
+            } else {
+                enemy_dead = "fainted";
+            }
         }
     } else {
         pkmn_text = `${(Attacker.name.toUpperCase())} used ${aMove.id} but missed !`;
     }
-    
     
     
     

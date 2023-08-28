@@ -165,6 +165,19 @@ td {
     bottom: 50px;
     z-index: 2;
 }
+.hurt_u {
+    display: flex;
+    position: relative;
+    -moz-transform:scale(2);
+    -webkit-transform:scale(2);
+    transform:scale(2);
+    width: min-content;
+    height: min-content;
+    right: 80px;
+    bottom: 50px;
+    z-index: 2;
+    filter: brightness(0) invert(1);
+}
 .pkmn_enemy {
     display: flex;
     position: relative;
@@ -176,6 +189,19 @@ td {
     left: 60px;
     bottom: 50px;
     z-index: 2;
+}
+.hurt_e {
+    display: flex;
+    position: relative;
+    -moz-transform:scale(2);
+    -webkit-transform:scale(2);
+    transform:scale(2);
+    width: min-content;
+    height: min-content;
+    left: 60px;
+    bottom: 50px;
+    z-index: 2;
+    filter: brightness(0) invert(1);
 }
 
 .pkmn_sel_box {
@@ -342,17 +368,6 @@ td {
 .fainted {
     filter: grayscale(100%);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 .type_enemy {
     position: absolute;
