@@ -154,9 +154,9 @@ function getTypes() {
 }
 function getSprite(id, isUser) {
     if (isUser) {
-        return`<img src="img/${pkmn_party[id].id}_b.gif" class="pkmn_user"/>`;
+        return`<img src="img/${pkmn_party[id].id.toLowerCase()}_b.gif" class="pkmn_user"/>`;
     } else {
-        return `<img src="img/${enemy_party[id].id}.gif" class="pkmn_enemy"/>`;
+        return `<img src="img/${enemy_party[id].id.toLowerCase()}.gif" class="pkmn_enemy"/>`;
     }
 }
 function funcDamage(Attacker, Defender, Move_id) {
@@ -228,7 +228,7 @@ function loadPartyHTML() {
         <div class="pkmn_sel_box center">  
             <div class="pkmn_sel center">  
                 <div onclick="switchPKMN('${i}')" class="switch">
-                    <img src="img/party/${pkmn_party[i].id}.png"/>
+                    <img src="img/party/${pkmn_party[i].id.toLowerCase()}.png"/>
                 </div>
             </div>
         </div>
