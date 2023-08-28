@@ -339,7 +339,9 @@ td {
     background: rgb(255, 174, 255);
 }
 
-
+.fainted {
+    filter: grayscale(100%);
+}
 
 
 

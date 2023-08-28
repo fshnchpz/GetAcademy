@@ -288,6 +288,17 @@ function loadPartyHTML() {
   let box = 0;
 
   for (let i = 0; i < pkmn_inParty; i++) {
+    if (pkmn_party[i].curHP <= 0) {
+        pkmn_party_html += /*HTML*/ `
+            <div class="pkmn_sel_box center">  
+                <div class="pkmn_sel center">  
+                    <div onclick="switchPKMN('${i}')" class="switch">
+                        <img class="fainted" src="img/party/${pkmn_party[i].id.toLowerCase()}.png"/>
+                    </div>
+                </div>
+            </div>
+            `;
+        } else {
     pkmn_party_html += /*HTML*/ `
         <div class="pkmn_sel_box center">  
             <div class="pkmn_sel center">  
@@ -296,8 +307,8 @@ function loadPartyHTML() {
                 </div>
             </div>
         </div>
-        
-  `;
+        `;
+    }
   if (box == 6) {
     pkmn_party_html += '<br>';
     box = 0;
