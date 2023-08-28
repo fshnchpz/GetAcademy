@@ -7,15 +7,42 @@ let pkmn_enemy_spr = "";
 let pkmn_enemy_type = "";
 let pkmn_text = "Select your pokemon";
 let party_sel = 0;
+let previous_sel = 0;
 let enemy_sel = 0;
 
 let game_state = "in_battle";
 
 let pkmn_party = [
-    {"id":"venusaur","type":["Grass"],"curHP":155, "maxHP":155,"attack":82,"defense":83,"sp_atk":100,"sp_def":100,"speed":80,"moves":["Solar Beam"]},
-    {"id":"blastoise","type":["Water"],"curHP":154, "maxHP":154,"attack":83,"defense":100,"sp_atk":85,"sp_def":105,"speed":78,"moves":["Hydro Pump"]},
-    {"id":"charizard","type":["Fire"],"curHP":153, "maxHP":153,"attack":84,"defense":78,"sp_atk":109,"sp_def":85,"speed":100,"moves":["Fire Blast"]}
+    {"id":"venusaur","type":["Grass"],"curHP":270, "maxHP":270,"attack":152,"defense":153,"sp_atk":184,"sp_def":184,"speed":148,"moves":["Solar Beam"]},
+    {"id":"blastoise","type":["Water"],"curHP":268, "maxHP":268,"attack":153,"defense":184,"sp_atk":157,"sp_def":193,"speed":144,"moves":["Hydro Pump"]},
+    {"id":"charizard","type":["Fire"],"curHP":266, "maxHP":266,"attack":155,"defense":144,"sp_atk":200,"sp_def":157,"speed":184,"moves":["Fire Blast"]},
+    {"id":"Flygon","type":["Ground","Dragon"],"curHP":270, "maxHP":270,"attack":184,"defense":148,"sp_atk":148,"sp_def":148,"speed":184,"moves":["Dragon Rush"]},
+    {"id":"Rotom-frost","type":["Electric","Ice"],"curHP":210, "maxHP":210,"attack":121,"defense":197,"sp_atk":193,"sp_def":197,"speed":159,"moves":["Thunder","Blizzard"]}
 ];
+const data_moves = [
+    { "id":"Solar Beam", "Power": 120, "mType":"Grass", "Special":true,"Accuracy":100},
+    { "id":"Solar Blade", "Power": 125, "mType":"Grass", "Special":false,"Accuracy":100},
+    { "id":"Hydro Pump", "Power": 110, "mType":"Water", "Special":true,"Accuracy":80},
+    { "id":"Liquidation", "Power": 85, "mType":"Water", "Special":false,"Accuracy":100},
+    { "id":"Fire Blast", "Power": 110, "mType":"Fire", "Special":true,"Accuracy":85},
+    { "id":"Flare Blitz", "Power": 120, "mType":"Fire", "Special":false,"Accuracy":100},
+    
+    { "id":"Thunder", "Power": 110, "mType":"Electric", "Special":true,"Accuracy":70},
+    { "id":"Volt Tackle", "Power": 120, "mType":"Electric", "Special":false,"Accuracy":100},
+
+    { "id":"Blizzard", "Power": 110, "mType":"Ice", "Special":true,"Accuracy":70},
+    { "id":"Ice Hammer", "Power": 100, "mType":"Ice", "Special":false,"Accuracy":90},
+    
+    { "id":"Thunder", "Power": 110, "mType":"Electric", "Special":true,"Accuracy":70},
+    { "id":"Volt Tackle", "Power": 120, "mType":"Electric", "Special":false,"Accuracy":100},
+    
+    { "id":"Dragon Pulse", "Power": 85, "mType":"Dragon", "Special":true,"Accuracy":70},
+    { "id":"Dragon Rush", "Power": 120, "mType":"Dragon", "Special":false,"Accuracy":75},
+    
+    { "id":"Psychic", "Power": 90, "mType":"Psychic", "Special":true,"Accuracy":100},
+    { "id":"Psychic Fangs", "Power": 85, "mType":"Psychic", "Special":false,"Accuracy":100}
+];
+
 let enemy_party = [];
 enemy_party = JSON.parse(JSON.stringify(pkmn_party));
 let pkmn_party_html = "";
@@ -60,6 +87,7 @@ function viewHTML() {
 }
 
 function switchPKMN(pkmn) {
+    let switched = false;
   pkmn_user = pkmn_party[pkmn].id;
   pkmn_user_type = `
   <div class="type_user">
@@ -68,9 +96,29 @@ function switchPKMN(pkmn) {
   </div>
   `;
   party_sel = pkmn;
+  if (previous_sel != pkmn){
+    switched = true;
+  }
+  previous_sel = pkmn;
 
   wildEncounter();
-  updateSprite();
+  if (pkmn_party[party_sel].curHP > 0 || enemy_party[enemy_sel].curHP > 0) {
+    if (enemy_party[enemy_sel].speed > pkmn_party[party_sel].speed || switched){
+        PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].id} moves first ...`);
+        setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[0]);
+        setTimeout(PKMN_Msgboard,3000,`Your ${pkmn_party[party_sel].id} moves next ...`);
+        setTimeout(funcDamage,5000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[0]);
+    }
+    else
+    {
+        PKMN_Msgboard(`Your ${pkmn_party[party_sel].id} moves first ...`);
+        setTimeout(funcDamage,2000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[0]);
+        setTimeout(PKMN_Msgboard,3000,`Opponent ${enemy_party[enemy_sel].id} moves next ...`);
+        setTimeout(funcDamage,5000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[0]);
+    }
+  }
+  
+  
 }
 function wildEncounter() {
     let id = enemy_sel;
@@ -111,32 +159,37 @@ function getSprite(id, isUser) {
         return `<img src="img/${enemy_party[id].id}.gif" class="pkmn_enemy"/>`;
     }
 }
-function updateSprite() {
+function funcDamage(Attacker, Defender, Move_id) {
+    if (Defender.curHP <= 0 || Attacker.curHP <= 0) {
+        return;
+    }
+
     let DMG = 0;
-    let MoveType = pkmn_party[party_sel].type[0];
-    let isPhys = false;
-    let Power = 80;
+    let aMove = data_moves.find((tMove) => tMove.id === Move_id);
+    let MoveType = aMove.mType;
+    let isPhys = aMove.Special;
+    let Power = aMove.Power;
     let iStabMult = 1;
     let ATK_Stat;
     let DEF_Stat;
     let Critical = 1;
     let Level = 50;
     let EnemyTypes = [];
-    EnemyTypes = enemy_party[enemy_sel].type;
+    EnemyTypes = Defender.type;
 
     let HP = Math.floor(0.01 * (2 * 78 + 31) * 50) + 50 + 10
 
     if (isPhys) {
-        ATK_Stat = pkmn_party[party_sel].attack;
-        DEF_Stat = enemy_party[enemy_sel].defense;
+        ATK_Stat = Attacker.attack;
+        DEF_Stat = Defender.defense;
     }
     else{
-        ATK_Stat = pkmn_party[party_sel].sp_atk;
-        DEF_Stat = enemy_party[enemy_sel].sp_def;
+        ATK_Stat = Attacker.sp_atk;
+        DEF_Stat = Attacker.sp_def;
     }
     
-    for (i=0; i<pkmn_party[party_sel].type.length; i++){
-        if (pkmn_party[party_sel].type[i] == MoveType) {
+    for (i=0; i<Attacker.type.length; i++){
+        if (Attacker.type[i] == MoveType) {
             iStabMult = 1.5;
         }
     }
@@ -145,10 +198,24 @@ function updateSprite() {
     DMG = Math.floor(((((2 * Level) + 10)/250) * (ATK_Stat/DEF_Stat) * (Power) + 2) * iStabMult);
     
     DMG = TypeEffectiveness(DMG,MoveType,EnemyTypes);
-    enemy_party[enemy_sel].curHP -= DMG; 
+    Defender.curHP -= DMG; 
     
-    pkmn_text = `You hit ${(enemy_party[enemy_sel].id.toUpperCase())} for ${DMG} damage !`; 
-  viewHTML();
+    
+    pkmn_text = `${(Attacker.id.toUpperCase())} hit ${(Defender.id.toUpperCase())} for ${DMG} damage !`;
+
+    
+    if (Defender.curHP < 0) {
+        Defender.curHP = 0;
+
+        setTimeout(PKMN_Msgboard, 2000,`${Defender.id.toUpperCase()} has fainted !`);
+    }
+    
+    viewHTML();
+}
+
+function PKMN_Msgboard(text) {
+    pkmn_text = text;
+    viewHTML();
 }
 
 function loadPartyHTML() {
@@ -178,7 +245,6 @@ function loadPartyHTML() {
     `;
   }
 }
-switchPKMN(0);
 viewHTML();
 
 function TypeEffectiveness(DMG, Type,onType) {
