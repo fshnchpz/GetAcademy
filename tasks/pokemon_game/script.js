@@ -15,14 +15,22 @@ let game_ready = true;
 let user_dead = "";
 let enemy_dead = "";
 let ball_HTML = `<div class="pkball_box"></div>`;
+let bag_items = [
+    {"name":"pokeball","amount":25,"catch_rate":15.0},
+    {"name":"greatball","amount":10,"catch_rate":20.0},
+    {"name":"ultraball","amount":5,"catch_rate":40.0},
+    {"name":"masterball","amount":1,"catch_rate":100.0}
+];
 
 let game_state = "in_battle";
 let battle_state = "wild";
 
 let pkmn_party = [];
-pkmn_party = JSON.parse(JSON.stringify(data_pkmn));
+pkmn_party.push(getRandomPKMN());
+
 let enemy_party = [];
-enemy_party = JSON.parse(JSON.stringify(pkmn_party));
+enemy_party.push(getRandomPKMN());
+//enemy_party = JSON.parse(JSON.stringify(data_pkmn));
 let pkmn_party_html = "";
 
 function viewHTML() {
@@ -39,7 +47,7 @@ function viewHTML() {
             <div class="game_app">
                 ${TypesHTML}
                 <div id="pkmn_sprite_front">${getSprite(enemy_sel,false)}</div>
-                <div id="pkmn_sprite_back">${getSprite(party_sel,true)}</div>
+                <div id="pkmn_sprite_back">${getSprite(party_sel,true) ? getSprite(party_sel,true) : ""}</div>
 
                 <div class="user_info">
                     <div class="rel">
@@ -51,21 +59,26 @@ function viewHTML() {
                 </div>
                 <div class="enemy_info">
                     <div class="rel">
-                        <div class="enemy_pkmn_name">${enemy_party[enemy_sel].name}</div>
+                        <div class="enemy_pkmn_name">${enemy_party.length > 0 ? enemy_party[enemy_sel].name : ""}</div>
                         <div class="enemy_hpfield"></div>
-                        <div class="hp_bar_enemy" style="width: ${getPixelPerc(76,enemy_party[enemy_sel].curHP,enemy_party[enemy_sel].maxHP)}px;"></div>
-                        <div class="enemy_HP_num">${enemy_party[enemy_sel].curHP} / ${enemy_party[enemy_sel].maxHP}</div>
+                        <div class="hp_bar_enemy" style="width: ${enemy_party.length > 0 ? getPixelPerc(76,enemy_party[enemy_sel].curHP,enemy_party[enemy_sel].maxHP) : 0}px;"></div>
+                        <div class="enemy_HP_num">${enemy_party.length > 0 ? enemy_party[enemy_sel].curHP : 0} / ${enemy_party.length > 0 ? enemy_party[enemy_sel].maxHP : 0}</div>
                     </div>
                 </div>
                 <div class="moves_Cont">
                     ${MovesHTML}
+                </div>
+                <div class="pkball_box" id="pkball_box">
+                    <img src="img/bag.png"/>
+                </div>
+                <div class="pkball_cont" id="pkball_cont">
+                    ${ball_HTML}
                 </div>
             </div>
             <div class="divider"></div>
             <div class="center">
                 <div class="textboxo">
                     <div id="textbox" class="textbox center">${pkmn_text}</div>
-                    ${ball_HTML}
                 </div>
             </div>
             <div class="game_sel center">
@@ -73,7 +86,22 @@ function viewHTML() {
             </div>
         `;
     HTMLcode.innerHTML = newhtml;
+    if (game_ready && user_dead != "fainted") {
+        document.getElementById("pkball_box").addEventListener("mouseover", pkball_over);
+        document.getElementById("pkball_box").addEventListener("mouseout", pkball_out);
+        document.getElementById("pkball_cont").addEventListener("mouseover", pkball_over);
+        document.getElementById("pkball_cont").addEventListener("mouseout", pkball_out);
+    }
   }
+}
+
+function pkball_over() {
+     document.getElementById("pkball_cont").style.visibility = "visible";
+     document.getElementById("pkball_cont").style.transform = "translateX(55px)";
+}
+
+function pkball_out() {
+    document.getElementById("pkball_cont").style.transform = "translateX(-500px)";
 }
 function loadMovesHTML() {
     if (!game_ready){
@@ -103,9 +131,17 @@ function loadMovesHTML() {
 }
 function loadPokeballHTML() {
 
-    ball_HTML = /*HTML*/ `
+    ball_HTML = /*HTML*/ ``;
+    
+    for (i=0; i<bag_items.length; i++) {
         
-    `;
+        ball_HTML += /*HTML*/`
+        <div class="pkball">
+            <img src="img/ball_${bag_items[i].name}.png" onClick="catch_pkmn(${i})" class="pkball_img"/>
+            <div class="pkball_num">${bag_items[i].amount}</div>
+        </div>
+        `;
+    }
 }
 
 function anim_hurt(isPlayer) {
@@ -135,7 +171,12 @@ function getSprite(id, isUser) {
     if (isUser) {
         return`<img src="https://img.pokemondb.net/sprites/black-white/anim/back-normal/${pkmn_party[id].id.toLowerCase()}.gif" class="pkmn_user ${user_dead}" id="pk_user"/>`;
     } else {
+        if (enemy_party.length > 0) {
         return `<img src="https://img.pokemondb.net/sprites/black-white/anim/normal/${enemy_party[id].id.toLowerCase()}.gif" class="pkmn_enemy ${enemy_dead}" id="pk_enemy"/>`;
+        } else {
+            return ``;
+        }
+        
     }
 }
 function getTypes() {
@@ -149,12 +190,17 @@ function getTypes() {
     }
     HTML += `</div>`;
 
-    HTML += `<div class="type_enemy">`;
-    for (let i=0; i<enemy_party[e_id].type.length; i++) {
-        HTML += `<div class="pkmn_type_ico ${enemy_party[e_id].type[i]}">${enemy_party[e_id].type[i]}</div>`;
+    if (enemy_party.length > 0) {
+        HTML += `<div class="type_enemy">`;
+        for (let i=0; i<enemy_party[e_id].type.length; i++) {
+            HTML += `<div class="pkmn_type_ico ${enemy_party[e_id].type[i]}">${enemy_party[e_id].type[i]}</div>`;
+        }
+         HTML += `</div>`;
+    }
+    else
+    {
     }
 
-    HTML += `</div>`;
     return HTML;
 }
 function funcDamage(Attacker, Defender, Move_id) {
@@ -328,7 +374,6 @@ function switchPKMN(pkmn) {
     user_dead = "";
   }
 
-  wildEncounter();
   viewHTML();
   if (switched) {
     if (firstSwitch){
@@ -341,7 +386,9 @@ function switchPKMN(pkmn) {
 }
 
 function useMove(move_index, switched) {
-    
+    if (pkmn_party[party_sel].curHP < 1 || enemy_party[enemy_sel].curHP < 1) {
+        return;
+    }
     viewHTML();
     if (!game_ready){
         return;
@@ -388,9 +435,60 @@ function readyGame(){
 }
 
 function wildEncounter() {
+    enemy_party = [];
+    enemy_party.push(getRandomPKMN());
+    enemy_party = JSON.parse(JSON.stringify(enemy_party));
+
     let id = enemy_sel;
 
     pkmn_enemy = pkmn_party[id].id;
+    viewHTML();
+}
+
+function getRandomPKMN(){
+    let pkmn_array = JSON.parse(JSON.stringify(data_pkmn));
+    let rand_index = Math.floor(Math.random() * pkmn_array.length);
+
+    let rand_pkmn = JSON.parse(JSON.stringify(pkmn_array[rand_index]));
+    return rand_pkmn;
+}
+
+function catch_pkmn(ball) {
+    let pokeball = bag_items[ball];
+    if (bag_items[ball].amount < 1) {
+        return;
+    }
+
+    bag_items[ball].amount--;
+
+    let enemy = enemy_party[enemy_sel];
+    let multiplier = 1;
+    let HP_Percent = (enemy.curHP / enemy.maxHP) * 100
+    let chanceToCatch;
+    if (HP_Percent <= 50) {
+        multiplier = 1.5;
+    } else if (HP_Percent <= 25) {
+        multiplier = 2;
+    } else if (HP_Percent <= 5) {
+        multiplier = 3;
+    }
+    chanceToCatch = pokeball.catch_rate * multiplier;
+
+    let rng = Math.round(Math.random() * 100);
+    if (chanceToCatch > rng) {
+        pkmn_party.push(enemy);
+        pkmn_party = JSON.parse(JSON.stringify(pkmn_party));
+        pkmn_party[pkmn_party.length-1].curHP = pkmn_party[pkmn_party.length-1].maxHP;
+
+        enemy_party[enemy_sel].curHP = 0;
+        enemy_party = [];
+        PKMN_Msgboard('You successfully caught the ' + enemy.name.toUpperCase());
+
+    }
+    else {
+        PKMN_Msgboard(enemy.name.toUpperCase() + ' broke out of the pokeball!');
+    }
+    viewHTML();
 }
 
 viewHTML();

@@ -593,3 +593,76 @@ td {
     text-align: center;
     line-height: 18px;
 }
+.pkball_box {
+    display:block;
+    position: relative;
+    top: -140px;
+    margin: 10px;
+    height: 65px;
+    width: 65px;
+    cursor:pointer;
+    z-index: 11;
+}
+.pkball_cont {
+    display: flex;
+    position: relative;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.726);
+    border:rgb(43, 43, 43) solid 3px;
+    border-radius: 15px;
+    height: 50px;
+    width: min-content;
+    max-width: 390px;
+    top: -210px;
+    left: -55px;
+    z-index: 10;
+    visibility: hidden;
+    padding-left: 70px;
+    padding-right: 10px;
+    transition: transform 500ms;
+}
+.pkball_cont:hover {
+    transform: translateX(60px);
+}
+
+
+
+.pkball {
+    display: flex;
+    position: relative;
+    height: 50px;
+    width: 50px;
+    align-items: center;
+    cursor: pointer;
+}
+.pkball_img {
+    height: 80%;
+    opacity: 80%;
+}
+.pkball_img:hover {
+    height: 90%;
+    opacity: 100%;
+}
+.pkball_num {
+    display: block;
+    position: absolute;
+    font-family: 'pkmn_dp';
+    background-color: #e4e4e4f1;
+    height: 20px;
+    min-width: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    right: 0px;
+    top: -6px;
+    font-size: 20px;
+    color:rgb(39, 39, 39);
+    border:rgb(43, 43, 43) solid 2px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 20px;
+    user-select: none;
+}
