@@ -16,9 +16,9 @@ let user_dead = "";
 let enemy_dead = "";
 let ball_HTML = `<div class="pkball_box"></div>`;
 let bag_items = [
-    {"name":"pokeball","amount":25,"catch_rate":15.0},
-    {"name":"greatball","amount":10,"catch_rate":20.0},
-    {"name":"ultraball","amount":5,"catch_rate":40.0},
+    {"name":"pokeball","amount":25,"catch_rate":10.0},
+    {"name":"greatball","amount":10,"catch_rate":15.0},
+    {"name":"ultraball","amount":5,"catch_rate":20.0},
     {"name":"masterball","amount":1,"catch_rate":100.0}
 ];
 
@@ -93,6 +93,23 @@ function viewHTML() {
         document.getElementById("pkball_cont").addEventListener("mouseout", pkball_out);
     }
   }
+  else if (game_state == "loading") {
+    let newhtml = /*HTML*/ `
+            <div class="game_app">
+                <div class="loading"></div>
+            </div>
+            <div class="divider"></div>
+            <div class="center">
+                <div class="textboxo">
+                    <div id="textbox" class="textbox center">${pkmn_text}</div>
+                </div>
+            </div>
+            <div class="game_sel center">
+                ${pkmn_party_html}
+            </div>
+        `;
+    HTMLcode.innerHTML = newhtml;
+  }
 }
 
 function pkball_over() {
@@ -128,6 +145,20 @@ function loadMovesHTML() {
             `;
         }
     }
+}
+function loadingScreen(newEncounter){
+    readyGame = false;
+    game_state = "loading";
+    PKMN_Msgboard('Loading ...');
+    viewHTML();
+    setTimeout(function() {
+        game_state = "in_battle";
+        if (newEncounter == true) {
+            wildEncounter();
+        }
+        readyGame = true;
+        viewHTML();
+    }, 2000);
 }
 function loadPokeballHTML() {
 
@@ -277,7 +308,10 @@ function funcDamage(Attacker, Defender, Move_id) {
                 user_dead = "fainted";
                 firstSwitch = true;
             } else {
+                enemy_party.splice(enemy_sel,1);
+                enemy_sel = 0;
                 enemy_dead = "fainted";
+                setTimeout(loadingScreen, 3000, true);
             }
         }
     } else {
@@ -340,7 +374,7 @@ function loadPartyHTML() {
         </div>
     `;
     if (box == 6) {
-        pkmn_party_html += '<br>';
+        pkmn_party_html.toLowerCase += '<br>';
         box = 0;
       }
       else {
@@ -359,10 +393,10 @@ function switchPKMN(pkmn) {
     let switched = false;
   pkmn_user = pkmn_party[pkmn].id;
   pkmn_user_type = `
-  <div class="type_user">
-    <div class="pkmn_type_ico ${pkmn_party[pkmn].type[0]}">${pkmn_party[pkmn].type[0]}</div>
-    <div class="pkmn_type_ico ${pkmn_party[pkmn].type}">${pkmn_party[pkmn].type}</div>
-  </div>
+    <div class="type_user">
+        <div class="pkmn_type_ico ${pkmn_party[pkmn].type[0]}">${pkmn_party[pkmn].type[0]}</div>
+        <div class="pkmn_type_ico ${pkmn_party[pkmn].type}">${pkmn_party[pkmn].type}</div>
+    </div>
   `;
   party_sel = pkmn;
   if (previous_sel != pkmn){
@@ -435,8 +469,16 @@ function readyGame(){
 }
 
 function wildEncounter() {
+    battle_state = "wild";
+    game_state = "in_battle";
     enemy_party = [];
-    enemy_party.push(getRandomPKMN());
+    let wild_pkmn = getRandomPKMN();
+
+    while (pkmn_party.some(e => e.name == wild_pkmn.name)) {
+        wild_pkmn = getRandomPKMN();
+    }
+    enemy_dead = "alive";
+    enemy_party.push(wild_pkmn);
     enemy_party = JSON.parse(JSON.stringify(enemy_party));
 
     let id = enemy_sel;
@@ -454,8 +496,13 @@ function getRandomPKMN(){
 }
 
 function catch_pkmn(ball) {
+    if (battle_state != "wild") {
+        PKMN_Msgboard('You can only use pokeballs on wild pokemon!');
+        return;
+    }
     let pokeball = bag_items[ball];
     if (bag_items[ball].amount < 1) {
+        PKMN_Msgboard('You do not own more of this pokeball');
         return;
     }
 
@@ -483,7 +530,9 @@ function catch_pkmn(ball) {
         enemy_party[enemy_sel].curHP = 0;
         enemy_party = [];
         PKMN_Msgboard('You successfully caught the ' + enemy.name.toUpperCase());
-
+        setTimeout(function() {
+            loadingScreen(true);
+        }, 1000, true);
     }
     else {
         PKMN_Msgboard(enemy.name.toUpperCase() + ' broke out of the pokeball!');
@@ -491,4 +540,5 @@ function catch_pkmn(ball) {
     viewHTML();
 }
 
+loadingScreen(true);
 viewHTML();
