@@ -1,0 +1,150 @@
+body {
+    background-color: #e9e9e9;
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 50px;
+    margin-top: 50px;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    min-width: 400px;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    padding: 3rem;
+}
+
+.logoGET{
+    width: 90%;
+}
+
+.divider {
+    background-color:#c9c9c9;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    height: 1px;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-family: sans-serif;
+    font-size: 23px;
+    color:#ff6e35;
+}
+h2 {
+    font-family: sans-serif;
+    font-size: 18px;
+    color:#ff6e35;
+}
+h3 {
+    font-size: 15px;
+    color:#ff6e35;
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    margin: 5px;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    border-color: #ff6e35;
+    background-color: #ff6e35;
+    border-style: none;
+    height: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+    padding-top: 5px;
+}
+a:hover {
+    background-color: #ff976d;
+}
+
+button {
+    margin: 2px;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    border-color: #ff6e35;
+    background-color: #ff6e35;
+    border-style: none;
+    height: 25px;
+    min-width: min-content;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    text-align: center;
+    text-decoration: none;
+    line-height: 23px;
+}
+button:hover {
+    background-color: #ff976d;
+}
+input {
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    background-color: #fff6f0;
+    height: 20px;;
+    width: 98%;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+}
+input:hover {
+    background-color: #ffffff;
+}
+
+td, th {
+    margin: 5px;
+    border-radius: 3px;
+}
+
+th {
+    background-color: #ff6e35;
+    border: 1px solid #ff6e35;
+    color: rgb(255, 255, 255);
+    border-radius: 7px;
+    height: 20px;
+}
+td {
+    border: 1px solid #ff6e35;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.list {
+    display: flex;
+    flex-direction: row;
+    min-width: 100%;
+}
+.myList tr{
+    width: 100%;
+}
+.myList th{
+    width: 100%;
+}
+.myHTML {
+    display: flex;
+    width: 100%;
+}
