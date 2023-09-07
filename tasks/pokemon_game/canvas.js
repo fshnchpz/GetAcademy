@@ -60,7 +60,7 @@ c.fillStyle = "white";
 c.fillRect(0, 0, canvas.width, canvas.height);
 
 const image = new Image();
-image.src = "Images/Pellet Town.png";
+image.src = "Images/pellet.png";
 
 const foregroundImage = new Image();
 foregroundImage.src = "Images/foreground.png";
