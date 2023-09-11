@@ -5,13 +5,13 @@ canvas.width = 1024;
 canvas.height = 576;
 
 const playerImage = new Image();
-playerImage.src = "images/playerDown.png";
+playerImage.src = "Images/playerDown.png";
 const playerUPImage = new Image();
-playerUPImage.src = "images/playerUp.png";
+playerUPImage.src = "Images/playerUp.png";
 const playerLEFTImage = new Image();
-playerLEFTImage.src = "images/playerLeft.png";
+playerLEFTImage.src = "Images/playerLeft.png";
 const playerRIGHTImage = new Image();
-playerRIGHTImage.src = "images/playerRight.png";
+playerRIGHTImage.src = "Images/playerRight.png";
 
 const collisionsMap = [];
 for (let i = 0; i < collisions.length; i += 70) {
