@@ -2,7 +2,11 @@ const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
 canvas.width = 1024;
-canvas.height = 576;
+canvas.height = 600;
+
+const Character_speed = 1;
+let canvasReady = true;
+let canEncounter = true;
 
 const playerImage = new Image();
 playerImage.src = "Images/playerDown.png";
@@ -17,15 +21,19 @@ const collisionsMap = [];
 for (let i = 0; i < collisions.length; i += 70) {
   collisionsMap.push(collisions.slice(i, 70 + i));
 }
+const encounterMap = [];
+for (let i = 0; i < encounter_grass.length; i += 70) {
+  encounterMap.push(encounter_grass.slice(i, 70 + i));
+}
 
 class Boundary {
-  static width = 48;
-  static height = 48;
+  static width = 32;
+  static height = 32;
 
   constructor({ position }) {
     this.position = position;
-    this.width = 48;
-    this.height = 48;
+    this.width = 32;
+    this.height = 32;
   }
 
   draw() {
@@ -33,17 +41,33 @@ class Boundary {
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 }
+class Encounter {
+  static width = 32;
+  static height = 32;
+
+  constructor({ position }) {
+    this.position = position;
+    this.width = 32;
+    this.height = 32;
+  }
+
+  draw() {
+    c.fillStyle = "green";
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
 
 const offset = {
-  x: -1620,
-  y: -695,
+  x: -512,
+  y: -456,
 };
 
 const boundaries = [];
+const encounters = [];
 
 collisionsMap.forEach((row, i) => {
   row.forEach((symbol, j) => {
-    if (symbol === 1025) {
+    if (symbol === 20833) {
       boundaries.push(
         new Boundary({
           position: {
@@ -55,15 +79,29 @@ collisionsMap.forEach((row, i) => {
     }
   });
 });
+encounterMap.forEach((row, i) => {
+  row.forEach((symbol, j) => {
+    if (symbol === 2399) {
+      encounters.push(
+        new Encounter({
+          position: {
+            x: j * Encounter.width + offset.x,
+            y: i * Encounter.height + offset.y,
+          },
+        })
+      );
+    }
+  });
+});
 
 c.fillStyle = "white";
 c.fillRect(0, 0, canvas.width, canvas.height);
 
 const image = new Image();
-image.src = "Images/pellet.png";
+image.src = "Images/pokemon_map2.png";
 
 const foregroundImage = new Image();
-foregroundImage.src = "Images/foreground.png";
+foregroundImage.src = "Images/pokemon_map2_foreground.png";
 
 image.onload = () => {};
 
@@ -111,8 +149,8 @@ class Sprite {
 
 const player = new Sprite({
   position: {
-    x: canvas.width / 2 - 192 / 4 / 2,
-    y: canvas.height / 2 - 68 / 2,
+    x: canvas.width / 2 - 128 / 4 / 2,
+    y: canvas.height / 2 - 45 / 2,
   },
   image: playerImage,
   frames: {
@@ -158,7 +196,7 @@ const keys = {
   },
 };
 
-const moveables = [background, ...boundaries, foreground];
+const moveables = [background, ...boundaries, foreground, ...encounters];
 
 function rectCollision({ rect1, rect2 }) {
   return (
@@ -169,123 +207,139 @@ function rectCollision({ rect1, rect2 }) {
   );
 }
 
+
 function animate() {
   window.requestAnimationFrame(animate);
   background.draw();
-  //   boundaries.forEach((b) => {
-  //     b.draw();
-  //   });
+  // boundaries.forEach((b) => {
+  //   b.draw();
+  // });
+  // encounters.forEach((e) => {
+  //   e.draw();
+  // });
   player.draw();
   foreground.draw();
   let moving = true;
   player.moving = false;
-  if (keys.w.pressed && lastKey === "w") {
-    for (let i = 0; i < boundaries.length; i++) {
-      const b = boundaries[i];
-      if (
-        rectCollision({
-          rect1: player,
-          rect2: {
-            ...b,
-            position: {
-              x: b.position.x,
-              y: b.position.y + 2,
+
+  if (canvasReady) {
+    if (keys.w.pressed && lastKey === "w") {
+      for (let i = 0; i < boundaries.length; i++) {
+        const b = boundaries[i];
+        if (
+          rectCollision({
+            rect1: player,
+            rect2: {
+              ...b,
+              position: {
+                x: b.position.x,
+                y: (b.position.y-16) + Character_speed,
+              },
             },
-          },
-        })
-      ) {
-        moving = false;
-        break;
+          })
+        ) {
+          moving = false;
+          break;
+        }
       }
-    }
-    if (moving) {
-        player.moving = true;
-        player.image = player.sprites.up;
-      moveables.forEach((moveable) => {
-        moveable.position.y += 2;
-      });
-    }
-  } else if (keys.s.pressed && lastKey === "s") {
-    for (let i = 0; i < boundaries.length; i++) {
-      const b = boundaries[i];
-      if (
-        rectCollision({
-          rect1: player,
-          rect2: {
-            ...b,
-            position: {
-              x: b.position.x,
-              y: b.position.y - 2,
+      if (moving) {
+          player.moving = true;
+          player.image = player.sprites.up;
+          checkEncounter();
+
+        moveables.forEach((moveable) => {
+          moveable.position.y += Character_speed;
+        });
+      }
+    } else if (keys.s.pressed && lastKey === "s") {
+      for (let i = 0; i < boundaries.length; i++) {
+        const b = boundaries[i];
+        if (
+          rectCollision({
+            rect1: player,
+            rect2: {
+              ...b,
+              position: {
+                x: b.position.x,
+                y: (b.position.y-16) - Character_speed,
+              },
             },
-          },
-        })
-      ) {
-        moving = false;
-        break;
+          })
+        ) {
+          moving = false;
+          break;
+        }
       }
-    }
-    if (moving) {
-        player.moving = true;
-        player.image = player.sprites.down;
-      moveables.forEach((moveable) => {
-        moveable.position.y -= 2;
-      });
-    }
-  } else if (keys.a.pressed && lastKey === "a") {
-    for (let i = 0; i < boundaries.length; i++) {
-      const b = boundaries[i];
-      if (
-        rectCollision({
-          rect1: player,
-          rect2: {
-            ...b,
-            position: {
-              x: b.position.x + 2,
-              y: b.position.y,
+      if (moving) {
+          player.moving = true;
+          player.image = player.sprites.down;
+          checkEncounter();
+
+        moveables.forEach((moveable) => {
+          moveable.position.y -= Character_speed;
+        });
+      }
+    } else if (keys.a.pressed && lastKey === "a") {
+      for (let i = 0; i < boundaries.length; i++) {
+        const b = boundaries[i];
+        if (
+          rectCollision({
+            rect1: player,
+            rect2: {
+              ...b,
+              position: {
+                x: b.position.x + Character_speed,
+                y: (b.position.y-16),
+              },
             },
-          },
-        })
-      ) {
-        moving = false;
-        break;
+          })
+        ) {
+          moving = false;
+          break;
+        }
       }
-    }
-    if (moving) {
-        player.moving = true;
-        player.image = player.sprites.left;
-      moveables.forEach((moveable) => {
-        moveable.position.x += 2;
-      });
-    }
-  } else if (keys.d.pressed && lastKey === "d") {
-    for (let i = 0; i < boundaries.length; i++) {
-      const b = boundaries[i];
-      if (
-        rectCollision({
-          rect1: player,
-          rect2: {
-            ...b,
-            position: {
-              x: b.position.x - 2,
-              y: b.position.y,
+      if (moving) {
+          player.moving = true;
+          player.image = player.sprites.left;
+          checkEncounter();
+
+        moveables.forEach((moveable) => {
+          moveable.position.x += Character_speed;
+        });
+      }
+    } else if (keys.d.pressed && lastKey === "d") {
+      for (let i = 0; i < boundaries.length; i++) {
+        const b = boundaries[i];
+        if (
+          rectCollision({
+            rect1: player,
+            rect2: {
+              ...b,
+              position: {
+                x: b.position.x - Character_speed,
+                y: (b.position.y-16),
+              },
             },
-          },
-        })
-      ) {
-        moving = false;
-        break;
+          })
+        ) {
+          moving = false;
+          break;
+        }
       }
-    }
-    if (moving) {
-        player.moving = true;
-        player.image = player.sprites.right;
-      moveables.forEach((moveable) => {
-        moveable.position.x -= 2;
-      });
+      if (moving) {
+          player.moving = true;
+          player.image = player.sprites.right;
+          checkEncounter();
+
+        moveables.forEach((moveable) => {
+          moveable.position.x -= Character_speed;
+        });
+      }
     }
   }
 }
 animate();
+
 
 let lastKey = "";
 window.addEventListener("keydown", (e) => {

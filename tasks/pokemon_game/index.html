@@ -9,13 +9,22 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <div class="center"> <h1>Pokemon - Game V0.40 (WIP)</h1></div>
+            <div class="center"> <h1>Pokemon - Game V0.5 (WIP)</h1></div>
             <div class="divider"></div>
-            <div id="myHTML"></div>
+            <div class="game_boundary">
+                <canvas class="pkmn_canvas"></canvas>
+                <div class="canvas_blank" id ="canvas_blank"></div>
+                <div id="game_holder" class="game_holder"></div>
+                <div id="afterCanvas" class="afterCanvas"></div>
+            </div>
         </div>
     </div>
 </body>
+    <script src="data/collisions.js"></script>
+    <script src="data/encounter.js"></script>
+    <script src="canvas.js"></script>
     <script src="data_pkmn.js"></script>
     <script src="script.js"></script>
     <script src="typeDMG.js"></script>
+
 </html>

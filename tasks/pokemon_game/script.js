@@ -1,4 +1,6 @@
 let HTMLcode = document.getElementById("myHTML");
+let game_holder_div = document.getElementById("game_holder");
+let belowCanvas_div = document.getElementById("afterCanvas");
 let MovesHTML = "";
 let pkmn_user = "None";
 let pkmn_user_spr = "";
@@ -33,7 +35,14 @@ enemy_party.push(getRandomPKMN());
 //enemy_party = JSON.parse(JSON.stringify(data_pkmn));
 let pkmn_party_html = "";
 
+const canvas_black = canvas.getContext('2d');
+
 function viewHTML() {
+    if (!canvasReady) {
+        canvas_black.fillStyle = "black";
+        canvas_black.fillRect(0,0,2000,2000);
+    }
+
   loadPartyHTML();
   MovesHTML = "";
   ball_HTML = "";
@@ -43,72 +52,91 @@ function viewHTML() {
     loadPokeballHTML();
   }
   if (game_state == "in_battle") {
-    let newhtml = /*HTML*/ `
-            <div class="game_app">
-                ${TypesHTML}
-                <div id="pkmn_sprite_front">${getSprite(enemy_sel,false)}</div>
-                <div id="pkmn_sprite_back">${getSprite(party_sel,true) ? getSprite(party_sel,true) : ""}</div>
+    let newhtml = ``;
+    if (!canvasReady) {
+        newhtml += /*HTML*/ `
+                    <div class="game_app">
+                        ${TypesHTML}
+                        <div id="pkmn_sprite_front">${getSprite(enemy_sel,false)}</div>
+                        <div id="pkmn_sprite_back">${getSprite(party_sel,true) ? getSprite(party_sel,true) : ""}</div>
 
-                <div class="user_info">
-                    <div class="rel">
-                        <div class="user_pkmn_name">${pkmn_party[party_sel].name}</div>
-                        <div class="user_hpfield"></div>
-                        <div class="hp_bar_user" style="width: ${getPixelPerc(76,pkmn_party[party_sel].curHP,pkmn_party[party_sel].maxHP)}px;"></div>
-                        <div class="user_HP_num">${pkmn_party[party_sel].curHP} / ${pkmn_party[party_sel].maxHP}</div>
+                        <div class="user_info">
+                            <div class="rel">
+                                <div class="user_pkmn_name">${pkmn_party[party_sel].name}</div>
+                                <div class="user_hpfield"></div>
+                                <div class="hp_bar_user" style="width: ${getPixelPerc(76,pkmn_party[party_sel].curHP,pkmn_party[party_sel].maxHP)}px;"></div>
+                                <div class="user_HP_num">${pkmn_party[party_sel].curHP} / ${pkmn_party[party_sel].maxHP}</div>
+                            </div>
+                        </div>
+                        <div class="enemy_info">
+                            <div class="rel">
+                                <div class="enemy_pkmn_name">${enemy_party.length > 0 ? enemy_party[enemy_sel].name : ""}</div>
+                                <div class="enemy_hpfield"></div>
+                                <div class="hp_bar_enemy" style="width: ${enemy_party.length > 0 ? getPixelPerc(76,enemy_party[enemy_sel].curHP,enemy_party[enemy_sel].maxHP) : 0}px;"></div>
+                                <div class="enemy_HP_num">${enemy_party.length > 0 ? enemy_party[enemy_sel].curHP : 0} / ${enemy_party.length > 0 ? enemy_party[enemy_sel].maxHP : 0}</div>
+                            </div>
+                        </div>
+                        <div class="moves_Cont">
+                            ${MovesHTML}
+                        </div>
+                        <div class="pkball_box" id="pkball_box">
+                            <img src="img/bag.png"/>
+                        </div>
+                        <div class="pkball_cont" id="pkball_cont">
+                            ${ball_HTML}
+                        </div>
                     </div>
-                </div>
-                <div class="enemy_info">
-                    <div class="rel">
-                        <div class="enemy_pkmn_name">${enemy_party.length > 0 ? enemy_party[enemy_sel].name : ""}</div>
-                        <div class="enemy_hpfield"></div>
-                        <div class="hp_bar_enemy" style="width: ${enemy_party.length > 0 ? getPixelPerc(76,enemy_party[enemy_sel].curHP,enemy_party[enemy_sel].maxHP) : 0}px;"></div>
-                        <div class="enemy_HP_num">${enemy_party.length > 0 ? enemy_party[enemy_sel].curHP : 0} / ${enemy_party.length > 0 ? enemy_party[enemy_sel].maxHP : 0}</div>
-                    </div>
-                </div>
-                <div class="moves_Cont">
-                    ${MovesHTML}
-                </div>
-                <div class="pkball_box" id="pkball_box">
-                    <img src="img/bag.png"/>
-                </div>
-                <div class="pkball_cont" id="pkball_cont">
-                    ${ball_HTML}
-                </div>
-            </div>
+            `;
+            document.getElementById('canvas_blank').style.opacity = '80%';
+    }
+    else {
+        document.getElementById('canvas_blank').style.opacity = '0%';
+    }
+        game_holder_div.innerHTML = newhtml;
+
+        belowCanvas_div.innerHTML = /*HTML*/`
             <div class="divider"></div>
             <div class="center">
                 <div class="textboxo">
                     <div id="textbox" class="textbox center">${pkmn_text}</div>
                 </div>
             </div>
-            <div class="game_sel center">
-                ${pkmn_party_html}
+            <div class="center">
+                <div class="game_sel center">
+                    ${pkmn_party_html}
+                </div>
             </div>
-        `;
-    HTMLcode.innerHTML = newhtml;
-    if (game_ready && user_dead != "fainted") {
+    `;
+
+    if (game_ready && user_dead != "fainted" && !canvasReady) {
         document.getElementById("pkball_box").addEventListener("mouseover", pkball_over);
         document.getElementById("pkball_box").addEventListener("mouseout", pkball_out);
         document.getElementById("pkball_cont").addEventListener("mouseover", pkball_over);
         document.getElementById("pkball_cont").addEventListener("mouseout", pkball_out);
     }
   }
-  else if (game_state == "loading") {
+  else if (game_state == "loading" && !canvasReady) {
     let newhtml = /*HTML*/ `
-            <div class="game_app">
-                <div class="loading"></div>
-            </div>
+                <div class="game_app">
+                    <div class="loading"></div>
+                </div>
+        `;
+        game_holder_div.innerHTML = newhtml;
+
+        belowCanvas_div.innerHTML = /*HTML*/`
+        
             <div class="divider"></div>
             <div class="center">
                 <div class="textboxo">
                     <div id="textbox" class="textbox center">${pkmn_text}</div>
                 </div>
             </div>
-            <div class="game_sel center">
-                ${pkmn_party_html}
+            <div class="center">
+                <div class="game_sel center">
+                    ${pkmn_party_html}
+                </div>
             </div>
         `;
-    HTMLcode.innerHTML = newhtml;
   }
 }
 
@@ -311,7 +339,12 @@ function funcDamage(Attacker, Defender, Move_id) {
                 enemy_party.splice(enemy_sel,1);
                 enemy_sel = 0;
                 enemy_dead = "fainted";
-                setTimeout(loadingScreen, 3000, true);
+                //setTimeout(loadingScreen, 3000, true);
+                setTimeout(() => {
+                    game_ready = true;
+                    canvasReady = true;
+                    viewHTML();
+                }, 3000);
             }
         }
     } else {
@@ -319,7 +352,7 @@ function funcDamage(Attacker, Defender, Move_id) {
     }
     
     
-    
+    game_ready = true;
     viewHTML();
 }
 
@@ -436,10 +469,16 @@ function useMove(move_index, switched) {
             game_ready = false;
             PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].name} moves first ...`);
             setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
+            setTimeout(() => {
+                game_ready = false;
+                viewHTML();
+            }, 2001);
             setTimeout(PKMN_Msgboard,3000,`Your ${pkmn_party[party_sel].name} moves next ...`);
             setTimeout(funcDamage,5000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[move_index]);
-            setTimeout(readyGame,5500);
-            setTimeout(viewHTML,5600);
+            setTimeout(() => {
+                game_Ready = true;
+                viewHTML();
+            }, 6000);
         }
         else
         {
@@ -447,10 +486,16 @@ function useMove(move_index, switched) {
             game_ready = false;
             PKMN_Msgboard(`Your ${pkmn_party[party_sel].name} moves first ...`);
             setTimeout(funcDamage,2000,pkmn_party[party_sel], enemy_party[enemy_sel], pkmn_party[party_sel].moves[move_index]);
+            setTimeout(() => {
+                game_ready = false;
+                viewHTML();
+            }, 2001);
             setTimeout(PKMN_Msgboard,3000,`Opponent ${enemy_party[enemy_sel].name} moves next ...`);
             setTimeout(funcDamage,5000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
-            setTimeout(readyGame,5500);
-            setTimeout(viewHTML,5600);
+            setTimeout(() => {
+                game_Ready = true;
+                viewHTML();
+            }, 6000);
         }
     }
     else
@@ -458,8 +503,10 @@ function useMove(move_index, switched) {
         game_ready = false;
         PKMN_Msgboard(`Opponent ${enemy_party[enemy_sel].name} moves first ...`);
         setTimeout(funcDamage,2000,enemy_party[enemy_sel],pkmn_party[party_sel],enemy_party[enemy_sel].moves[rand]);
-        setTimeout(readyGame,2500);
-        setTimeout(viewHTML,2600);
+        setTimeout(() => {
+            game_Ready = true;
+            viewHTML();
+        }, 2500);
     }
   }
 }
@@ -531,14 +578,61 @@ function catch_pkmn(ball) {
         enemy_party = [];
         PKMN_Msgboard('You successfully caught the ' + enemy.name.toUpperCase());
         setTimeout(function() {
-            loadingScreen(true);
-        }, 1000, true);
+            canvasReady = true;
+            viewHTML();
+        }, 1500);
     }
     else {
         PKMN_Msgboard(enemy.name.toUpperCase() + ' broke out of the pokeball!');
     }
+
     viewHTML();
 }
+
+
+function checkEncounter() {
+    let metEncounter = false;
+  
+    for (let i = 0; i < encounters.length; i++) {
+      const e = encounters[i];
+      if (
+        rectCollision({
+          rect1: player,
+          rect2: {
+            ...e,
+            position: {
+              x: e.position.x,
+              y: (e.position.y-16) + Character_speed,
+            },
+          },
+        })
+      ) {
+        /* Walked into Grass for Encounter chance */
+  
+        metEncounter = true;
+        break;
+      }
+    }
+    if (metEncounter && canEncounter){
+      let EncounterChance = 1;
+      if (Math.floor(Math.random() * 300) < EncounterChance) {
+        
+        console.log('Meeting Encounter')
+        canEncounter = false;
+        setTimeout(() => {
+          canEncounter = true;
+        }, 250);
+
+        wildEncounter();
+        canvasReady = false;
+        viewHTML();
+      }
+  
+      
+    }
+    
+    return metEncounter;
+  }
 
 loadingScreen(true);
 viewHTML();
