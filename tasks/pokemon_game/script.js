@@ -28,7 +28,10 @@ let game_state = "in_battle";
 let battle_state = "wild";
 
 let pkmn_party = [];
-pkmn_party.push(getRandomPKMN());
+let pkmn_filter = data_pkmn;
+let filtered = pkmn_filter.filter((p) => p.name == 'Pikachu');
+pkmn_party = filtered;
+pkmn_party = JSON.parse(JSON.stringify(pkmn_party));
 
 let enemy_party = [];
 enemy_party.push(getRandomPKMN());
@@ -614,7 +617,7 @@ function checkEncounter() {
       }
     }
     if (metEncounter && canEncounter){
-      let EncounterChance = 1;
+      let EncounterChance = 2;
       if (Math.floor(Math.random() * 300) < EncounterChance) {
         
         console.log('Meeting Encounter')

@@ -4,10 +4,15 @@ const data_pkmn = [
     {"id":"charizard","name":"Charizard","type":["Fire"],"curHP":266, "maxHP":266,"attack":155,"defense":144,"sp_atk":200,"sp_def":157,"speed":184,"moves":["Fire Blast"]},
     {"id":"Flygon","name":"Flygon","type":["Ground","Dragon"],"curHP":270, "maxHP":270,"attack":184,"defense":148,"sp_atk":148,"sp_def":148,"speed":184,"moves":["Dragon Rush"]},
     {"id":"Rotom-frost","name":"Rotom","type":["Electric","Ice"],"curHP":210, "maxHP":210,"attack":121,"defense":197,"sp_atk":193,"sp_def":197,"speed":159,"moves":["Thunder","Blizzard"]},
-    {"id":"Lucario","name":"Lucario","type":["Fighting","Steel"],"curHP":250, "maxHP":250,"attack":202,"defense":130,"sp_atk":211,"sp_def":130,"speed":166,"moves":["Close Combat","Meteor Mash","Aura Sphere","Flash Cannon"]}
+    {"id":"Lucario","name":"Lucario","type":["Fighting","Steel"],"curHP":250, "maxHP":250,"attack":202,"defense":130,"sp_atk":211,"sp_def":130,"speed":166,"moves":["Close Combat","Meteor Mash","Aura Sphere","Flash Cannon"]},
+    {"id":"Gardevoir","name":"Gardevoir","type":["Psychic","Fairy"],"curHP":246, "maxHP":246,"attack":121,"defense":121,"sp_atk":229,"sp_def":211,"speed":148,"moves":["Moonblast","Psychic"]},
+    {"id":"Lapras","name":"Lapras","type":["Water","Ice"],"curHP":370, "maxHP":370,"attack":157,"defense":148,"sp_atk":157,"sp_def":175,"speed":112,"moves":["Hydro Pump","Blizzard", "Body Slam"]},
+    {"id":"pikachu","name":"Pikachu","type":["Electric"],"curHP":180, "maxHP":180,"attack":130,"defense":76,"sp_atk":150,"sp_def":94,"speed":166,"moves":["Thunder","Volt Tackle", "Iron Tail"]}
 ];
 
 const data_moves = [
+    { "id":"Body Slam", "Power": 85, "mType":"Normal", "Special":false,"Accuracy":100},
+
     { "id":"Solar Beam", "Power": 120, "mType":"Grass", "Special":true,"Accuracy":100},
     { "id":"Solar Blade", "Power": 125, "mType":"Grass", "Special":false,"Accuracy":100},
     { "id":"Hydro Pump", "Power": 110, "mType":"Water", "Special":true,"Accuracy":80},
@@ -20,6 +25,8 @@ const data_moves = [
 
     { "id":"Blizzard", "Power": 110, "mType":"Ice", "Special":true,"Accuracy":70},
     { "id":"Ice Hammer", "Power": 100, "mType":"Ice", "Special":false,"Accuracy":90},
+
+    { "id":"Iron Tail", "Power": 100, "mType":"Steel", "Special":false,"Accuracy":75},
     
     { "id":"Thunder", "Power": 110, "mType":"Electric", "Special":true,"Accuracy":70},
     { "id":"Volt Tackle", "Power": 120, "mType":"Electric", "Special":false,"Accuracy":100},
@@ -33,5 +40,7 @@ const data_moves = [
     { "id":"Meteor Mash", "Power": 90, "mType":"Steel", "Special":false,"Accuracy":90},
     { "id":"Flash Cannon", "Power": 80, "mType":"Steel", "Special":true,"Accuracy":100},
     { "id":"Close Combat", "Power": 120, "mType":"Fighting", "Special":false,"Accuracy":100},
-    { "id":"Aura Sphere", "Power": 80, "mType":"Fighting", "Special":true,"Accuracy":100}
+    { "id":"Aura Sphere", "Power": 80, "mType":"Fighting", "Special":true,"Accuracy":100},
+    
+    { "id":"Moonblast", "Power": 95, "mType":"Fairy", "Special":true,"Accuracy":100}
 ];
