@@ -28,7 +28,7 @@ let game_state = "in_battle";
 let battle_state = "wild";
 
 let pkmn_party = [];
-let pkmn_filter = data_pkmn;
+let pkmn_filter = JSON.parse(JSON.stringify(data_pkmn));
 let filtered = pkmn_filter.filter((p) => p.name == 'Pikachu');
 pkmn_party = filtered;
 pkmn_party = JSON.parse(JSON.stringify(pkmn_party));
@@ -527,6 +527,7 @@ function wildEncounter() {
     while (pkmn_party.some(e => e.name == wild_pkmn.name)) {
         wild_pkmn = getRandomPKMN();
     }
+
     enemy_dead = "alive";
     enemy_party.push(wild_pkmn);
     enemy_party = JSON.parse(JSON.stringify(enemy_party));
