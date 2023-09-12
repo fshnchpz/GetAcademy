@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HALP! I got all these errors & no idea how to fix them!</title>
+</head>
+<body>
+    <div id="output"></div>
+    
+    <script>
+        const outputDiv = document.getElementById("output"); 
+        const questionArray = [
+            {
+                question: "Hva er verdens største landpattedyr?",
+                answers: {
+                    a: "Rød kjempekenguru",
+                    b: "Blåhval",
+                    c: "Elefant"
+                },
+                correctAnswer: "Elefant"
+    
+            },
+            {
+                question: "Hva er HEX koden for hvit?",
+                answers: {
+                    a: "#000",
+                    b: "#FFF",
+                    c: "#AAA"
+                },
+                correctAnswer: "#FFF"
+    
+            },
+            {
+                question: "Hva er tyngst av en kilo mel, en kilo bly og en kilo fjær?",
+                answers: {
+                    a: "BLY.",
+                    b: "Fjær, det er det flere av i en kilo",
+                    c: "Lurespørsmål!"
+                },
+                correctAnswer: "Lurespørsmål!"
+            }
+        ];
+        let correctAnswerCounter = 0;
+        let rightOrWrong = "";  
+    
+        function showQuiz(){
+            let randomQuestionIndex = Math.floor(Math.random() * questionArray.length )
+          
+            outputDiv.innerHTML = `Number of Correct Answers: ${correctAnswerCounter} </br>
+            ${questionArray[randomQuestionIndex].question} </br>`;
+    
+            for (const answer in questionArray[randomQuestionIndex].answers){
+                outputDiv.innerHTML += `
+                <li onclick="checkAnswer('${questionArray[randomQuestionIndex].answers[answer]}', ${randomQuestionIndex})">
+                ${ questionArray[randomQuestionIndex].answers[answer] }
+                </li>`;
+            }
+        }
+        showQuiz();
+    
+        function showHideResult(){
+            outputDiv.innerHTML += `
+            <div style="display: block"> Der hadde du ${rightOrWrong}!</div>
+            `;
+        }
+    
+        function checkAnswer(selectedAnswer, randomIndex){
+            rightOrWrong = "feil";
+
+            if(selectedAnswer == questionArray[randomIndex].correctAnswer){
+                rightOrWrong = "rett";
+                correctAnswerCounter++;
+            }
+
+            showQuiz();
+            showHideResult();
+        }
+        </script>
+</body>
+</html>
