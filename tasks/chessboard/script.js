@@ -64,3 +64,7 @@ function getChessRow() {
 }
 
 viewHTML();
+
+setTimeout(() => {
+    /* code here */
+}, timeoutmilliseconds);
