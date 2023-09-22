@@ -1,3 +1,5 @@
+const { default: axios } = require("axios");
+
 const getButton = document.getElementById('locationBTN');
 
 var lat;
@@ -22,6 +24,8 @@ const getData = (position) => {
                 yrData = response;
                 readyHTML();
             });
+
+            
         }
     )}
 };
