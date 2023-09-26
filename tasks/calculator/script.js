@@ -8,12 +8,16 @@ let varInputNumbString = '0'
 
 let varInputHistory = []
 
+let numberfontSize = "40px";
+
+
+
 function viewHTML() {
     let newhtml = /*HTML*/`
                 <div class="calc">
                 <div class="header">Kalkulator</div>
                 <div class="display">
-                    <div>${displayNumber()}</div>
+                    <div class="inputNumm" id="inputNume">${displayNumber()}</div>
                     <div class="inputHistory">${getHistory()}</div>
                 </div>
                 <div class="memorybuttons">
@@ -34,20 +38,29 @@ function viewHTML() {
                 </div>
             </div>
         `;
-
     HTMLcode.innerHTML = newhtml;
+    document.getElementById("inputNume").style.fontSize = numberfontSize;
 }
 
 function displayNumber() {
-    let numString = varInputNumbString.split('.');
+    let numberString = varInputNumbString;
+
+    if (varInputNumb > 999999999999999)
+    {
+        numberString = (varInputNumb.toExponential()).toString();
+    }
+
+    let numString = numberString.split('.');
     let thousand_parts = [];
 
     let numArray = numString[0].split('').reverse();
 
-    for (let i=0; i< numArray.length; i+=3){
-        let part = numArray.slice(i, i+3).reverse().join('');
-        thousand_parts.unshift(part);
-    } 
+    if (!numArray.includes('e')) {
+        for (let i=0; i< numArray.length; i+=3){
+            let part = numArray.slice(i, i+3).reverse().join('');
+            thousand_parts.unshift(part);
+        }
+    }
 
     let newNumString = thousand_parts.join(',');
     
@@ -57,6 +70,18 @@ function displayNumber() {
         displayNum = newNumString + '.' + numString[1];
     } else {
         displayNum = newNumString;
+    }
+
+    let FinalStringArr = displayNum.split('');
+    if (FinalStringArr.length > 15) {
+        let NewFontSize = Math.floor(((15 / FinalStringArr.length)) * 40)
+        if (NewFontSize < 19) {
+            numberfontSize = "19px";
+        }
+        else {
+            numberfontSize = (Math.floor(((15 / FinalStringArr.length)) * 40)).toString() + "px";
+        }
+        console.log("New Font Size: " + numberfontSize)
     }
 
     return displayNum;
@@ -194,6 +219,13 @@ function mathOperator(operator) {
         varInputHistory = [];
         return;
     }
+    else if (operator == 'sqrRoot') {
+        let floatInput = parseFloat(varInputNumbString);
+        varInputNumb = Math.sqrt(floatInput);
+        varInputNumbString = varInputNumb.toString();
+        viewHTML();
+        return;
+    }
 }
 
 function mathSum() {
@@ -212,3 +244,4 @@ function mathSum() {
 }
 
 viewHTML();
+

@@ -175,7 +175,7 @@ td {
 }
 
 .display {
-    display: flex;
+    display: inline;
     position: relative;
     height: 20%;
     justify-content: right;
@@ -189,8 +189,14 @@ td {
     bottom: 0;
     right: 0;
     margin: 0.3em;
-    font-size: 40px;
     font-weight: 500;
+}
+
+.inputNumm {
+    height: 39px;
+    display: inline-block;
+    width: 325px;
+    text-align: right;
 }
 
 .inputHistory {
