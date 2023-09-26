@@ -63,7 +63,6 @@ function displayNumber() {
     }
 
     let newNumString = thousand_parts.join(',');
-    
     let displayNum
     
     if (numString.length > 1) {
