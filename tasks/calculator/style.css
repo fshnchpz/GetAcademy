@@ -261,6 +261,7 @@ td {
 .num {
     background-color: var(--PrimaryColor) !important;
 }
+
 .num:hover {
     color:#202020;
     background-color: #ff8037 !important;

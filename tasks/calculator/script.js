@@ -55,13 +55,14 @@ function displayNumber() {
 
     let numArray = numString[0].split('').reverse();
 
-    if (!numArray.includes('e')) {
+    if (!numArray.includes('e') && !numArray.includes('Infinity')) {
         for (let i=0; i< numArray.length; i+=3){
             let part = numArray.slice(i, i+3).reverse().join('');
             thousand_parts.unshift(part);
         }
     }
 
+    
     let newNumString = thousand_parts.join(',');
     let displayNum
     
@@ -129,7 +130,7 @@ function digit(num) {
     let newString = numArray.join('');
 
     varInputNumbString = newString;
-    varInputNumb = parseFloat(varNumberString);
+    varInputNumb = parseFloat(varInputNumbString);
 
     // console.log(`varNumber: ${varNumber}`);
     // console.log(`varNumberString: ${varNumberString}`);
