@@ -141,6 +141,7 @@ td {
     --HighlightColor: #4cc2ff;
     --fontColorPrimary: #fff;
     --fontColorSecondary: #717171;
+    user-select: none;
 }
 
 
@@ -190,6 +191,18 @@ td {
     margin: 0.3em;
     font-size: 40px;
     font-weight: 500;
+}
+
+.inputHistory {
+    display: block;
+    position: relative;
+    height: 30px;
+    width: 100%;
+    font-size: 15px;
+    justify-content: right;
+    text-align: right;
+    color: rgb(190, 190, 190);
+    /* background-color: darkgray; */
 }
 
 .memorybuttons {
