@@ -153,7 +153,7 @@ td {
     border-radius: 5px;
     padding: 0.3em;
     width: 325px;
-    height: 535px;
+    height: 545px;
     margin: 20px;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.75);
 }
@@ -180,7 +180,6 @@ td {
     height: 20%;
     justify-content: right;
     /* background-color: red; */
-    
     cursor: text;
 }
 

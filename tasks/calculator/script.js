@@ -10,6 +10,7 @@ let varInputHistory = []
 
 let numberfontSize = "40px";
 
+let MemoryNumber = 0;
 
 
 function viewHTML() {
@@ -101,6 +102,11 @@ function digit(num) {
     console.log(`Digit click: ${num}`);
 
     let numString = varInputNumbString;
+
+    if (numString.length > 14){
+        return;
+    }
+
     let numArray = numString.split('');
 
     if (num == '.') {
@@ -241,6 +247,11 @@ function mathSum() {
 
     viewHTML();
     varInputHistory = [];
+}
+
+function funcMemory(op) {
+    
+
 }
 
 viewHTML();

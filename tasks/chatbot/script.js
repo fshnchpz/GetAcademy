@@ -37,6 +37,10 @@ function askChatbot(que) {
     
     //chat_txt.push('debug: svarer');
 
+    if (Q.includes('bye')) {
+        chat_txt.push(`<b>Chatbot: Goodbye`);
+    }
+
     if (Q.indexOf('hei') > -1) {
         chat_txt.push(`<b>Chatbot: Hei`);
     }

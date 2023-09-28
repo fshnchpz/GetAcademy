@@ -123,7 +123,7 @@ button:hover {
 
 #textField {
     all: revert;
-
+    white-space: pre;
     background-color: lightgray;
     border: darkgray solid 1px;
     border-radius: 10px;
