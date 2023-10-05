@@ -12,7 +12,6 @@ let numberfontSize = "40px";
 
 let MemoryNumber = 0;
 
-
 function viewHTML() {
     let newhtml = /*HTML*/`
                 <div class="calc">
@@ -22,11 +21,11 @@ function viewHTML() {
                     <div class="inputHistory">${getHistory()}</div>
                 </div>
                 <div class="memorybuttons">
-                    <div class="inactive">MC</div>
-                    <div class="inactive">MR</div>
-                    <div class="inactive">M+</div>
-                    <div class="inactive">M-</div>
-                    <div class="inactive">MS</div>
+                    <div onClick="funcMemory('Clear')">MC</div>
+                    <div onClick="funcMemory('Recall')">MR</div>
+                    <div onClick="funcMemory('Plus')">M+</div>
+                    <div onClick="funcMemory('Minus')">M-</div>
+                    <div onClick="funcMemory('Store')">MS</div>
                     <div class="inactive">M∨</div>
                 </div>
                 <div class="gridbuttons">
@@ -46,8 +45,7 @@ function viewHTML() {
 function displayNumber() {
     let numberString = varInputNumbString;
 
-    if (varInputNumb > 999999999999999)
-    {
+    if (varInputNumb > 999999999999999) {
         numberString = (varInputNumb.toExponential()).toString();
     }
 
@@ -250,8 +248,31 @@ function mathSum() {
 }
 
 function funcMemory(op) {
-    
-
+    if (op == 'Clear') {
+        MemoryNumber = 0;
+        return;
+    }
+    if (op == 'Recall' && MemoryNumber != 0) {
+        varInputNumb = MemoryNumber;
+        varInputNumbString = varInputNumb.toString();
+        viewHTML();
+        return;
+    }
+    if (op == 'Plus' && varInputNumb != 0) {
+        MemoryNumber += varInputNumb;
+        viewHTML();
+        return;
+    }
+    if (op == 'Minus' && varInputNumb != 0) {
+        MemoryNumber -= varInputNumb;
+        viewHTML();
+        return;
+    }
+    if (op == 'Store' && varInputNumb != 0) {
+        MemoryNumber = varInputNumb;
+        viewHTML();
+        return;
+    }
 }
 
 viewHTML();
