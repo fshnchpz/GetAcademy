@@ -147,6 +147,7 @@ td {
 
 .calc {
     display: flex;
+    position: relative;
     flex-direction: column;
     background-color: var(--bgColor);
     border: solid 1px #e4e4e4;
@@ -162,6 +163,54 @@ td {
     color: #fff;
     font-family: 'segoe ui', sans-serif;
     cursor: default;
+}
+
+.blackBox {
+    display: flex;
+    position: absolute;
+    border-radius: 5px;
+    padding: 0.3em;
+    height: 545px;
+    width: 322px;
+    bottom: 0px;
+    visibility: hidden;
+    left: 0px;
+    display: block;
+    transition: all 0.3s ease 0s;
+}
+.toggle2 {
+    height: 545px;
+    z-index: 1;
+    background-color: #0000007e;
+    visibility: visible;
+    transition: all 0.3s ease 0s;
+}
+
+.Memories {
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 0.3em;
+    width: 322px;
+    height: 0px;
+    display: hidden;
+    visibility: hidden;
+    transition: height 0.3s ease 0s;
+    
+    z-index: 2;
+}
+.toggle {
+    background-color: var(--bgColor);
+    border: solid 1px #5a5a5a;
+    height: 326px;
+    transition: height 0.3s ease 0s;
+    display: block;
+    visibility: visible;
+    
+    z-index: 2;
 }
 
 .header {
@@ -214,6 +263,7 @@ td {
     display: flex;
     justify-content: center;
     align-items: center; 
+    z-index: 3;
 }
 
 .memorybuttons > div {

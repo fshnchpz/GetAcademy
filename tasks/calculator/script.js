@@ -11,37 +11,48 @@ let varInputHistory = []
 let numberfontSize = "40px";
 
 let MemoryNumber = 0;
+let MemoryDivClass = "Memories";
+let toggleMemories = false;
 
 function viewHTML() {
     let newhtml = /*HTML*/`
-                <div class="calc">
-                <div class="header">Kalkulator</div>
-                <div class="display">
-                    <div class="inputNumm" id="inputNume">${displayNumber()}</div>
-                    <div class="inputHistory">${getHistory()}</div>
-                </div>
-                <div class="memorybuttons">
-                    <div onClick="funcMemory('Clear')">MC</div>
-                    <div onClick="funcMemory('Recall')">MR</div>
-                    <div onClick="funcMemory('Plus')">M+</div>
-                    <div onClick="funcMemory('Minus')">M-</div>
-                    <div onClick="funcMemory('Store')">MS</div>
-                    <div class="inactive">M∨</div>
-                </div>
-                <div class="gridbuttons">
-                    <div onClick="mathOperator('%')">%</div><div onClick="resetInput()">CE</div><div onClick="fullReset()">C</div><div onClick="backspace()">⌫</div>
-                    <div onClick="mathOperator('convertDec')">¹/ₓ</div><div onClick="mathOperator('exp')">x²</div><div onClick="mathOperator('sqrRoot')">√</div><div onClick="mathOperator('/')">÷</div>
-                    <div class="num" onClick="digit(this.innerHTML)">7</div><div class="num" onClick="digit(this.innerHTML)">8</div><div class="num" onClick="digit(this.innerHTML)">9</div><div onClick="mathOperator('*')">⨯</div>
-                    <div class="num" onClick="digit(this.innerHTML)">4</div><div class="num" onClick="digit(this.innerHTML)">5</div><div class="num" onClick="digit(this.innerHTML)">6</div><div onClick="mathOperator('-')">−</div>
-                    <div class="num" onClick="digit(this.innerHTML)">1</div><div class="num" onClick="digit(this.innerHTML)">2</div><div class="num" onClick="digit(this.innerHTML)">3</div><div onClick="mathOperator('+')">+</div>
-                    <div class="num" onClick="reverse()">±</div><div class="num" onClick="digit(this.innerHTML)">0</div><div class="num" onClick="digit(this.innerHTML)">.</div><div onClick="mathSum()">=</div>
-                </div>
+        <div class="calc">
+            <div class="header">Kalkulator</div>
+            <div class="display">
+                <div class="inputNumm" id="inputNume">${displayNumber()}</div>
+                <div class="inputHistory">${getHistory()}</div>
             </div>
-        `;
+            <div class="memorybuttons">
+                <div onClick="funcMemory('Clear')">MC</div>
+                <div onClick="funcMemory('Recall')">MR</div>
+                <div onClick="funcMemory('Plus')">M+</div>
+                <div onClick="funcMemory('Minus')">M-</div>
+                <div onClick="funcMemory('Store')">MS</div>
+                <div onClick="toggleMemoriesVisible()">M∨</div>
+            </div>
+            <div class="gridbuttons">
+                <div onClick="mathOperator('%')">%</div><div onClick="resetInput()">CE</div><div onClick="fullReset()">C</div><div onClick="backspace()">⌫</div>
+                <div onClick="mathOperator('convertDec')">¹/ₓ</div><div onClick="mathOperator('exp')">x²</div><div onClick="mathOperator('sqrRoot')">√</div><div onClick="mathOperator('/')">÷</div>
+                <div class="num" onClick="digit(this.innerHTML)">7</div><div class="num" onClick="digit(this.innerHTML)">8</div><div class="num" onClick="digit(this.innerHTML)">9</div><div onClick="mathOperator('*')">⨯</div>
+                <div class="num" onClick="digit(this.innerHTML)">4</div><div class="num" onClick="digit(this.innerHTML)">5</div><div class="num" onClick="digit(this.innerHTML)">6</div><div onClick="mathOperator('-')">−</div>
+                <div class="num" onClick="digit(this.innerHTML)">1</div><div class="num" onClick="digit(this.innerHTML)">2</div><div class="num" onClick="digit(this.innerHTML)">3</div><div onClick="mathOperator('+')">+</div>
+                <div class="num" onClick="reverse()">±</div><div class="num" onClick="digit(this.innerHTML)">0</div><div class="num" onClick="digit(this.innerHTML)">.</div><div onClick="mathSum()">=</div>
+            </div>
+            <div id="easeBox" class="blackBox"></div>
+            ${displayMemories()}
+        </div>
+    `;
     HTMLcode.innerHTML = newhtml;
     document.getElementById("inputNume").style.fontSize = numberfontSize;
 }
 
+function displayMemories() {
+    let HTML = /* HTML */ `
+            <div id="Memory" class="Memories"></div>
+        
+        `;
+    return HTML;
+}
 function displayNumber() {
     let numberString = varInputNumbString;
 
@@ -140,6 +151,12 @@ function digit(num) {
     // console.log(`varNumberString: ${varNumberString}`);
 
     viewHTML();
+}
+
+function toggleMemoriesVisible() {
+    document.getElementById("easeBox").classList.toggle("toggle2");
+    document.getElementById("Memory").classList.toggle("toggle");
+    toggleMemories = !toggleMemories;
 }
 
 function reverse(){
