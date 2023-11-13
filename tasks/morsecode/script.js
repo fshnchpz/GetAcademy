@@ -9,7 +9,7 @@ const morseCodeArray = [ '.-', '-...', '-.-.', '-..', '.', '..-.', '--.', '....'
 function viewHTML() {
     let newhtml = /*HTML*/`
             <h2 class="center">Skriv inn tekst som skal bli oversettet til morsecode</h2>
-            <div class="inputs center"><input value="" type="text" id="textInput"/><button onClick="morse_trans()">Translate</button></div>
+            <div class="inputs center"><input value="" type="text" id="textInput" onchange="morse_trans()"/><button onClick="morse_trans()">Translate</button></div>
             <div class="divider"></div>
             <div class="Text">${text_innerhtml}</div>
             <div class="divider"></div>
